@@ -11,7 +11,7 @@ const ic="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 t
 const Pin=()=><svg className={ic} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>;
 const Cal=()=><svg className={ic} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>;
 const Usr=()=><svg className={ic} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>;
-const fld="h-14 w-full rounded-md bg-white pl-10 pr-3 font-medium text-gray-900 placeholder:text-gray-500";
+const fld="h-14 w-full rounded-lg border border-gray-300 bg-white md:rounded-md md:border-0 pl-10 pr-3 font-medium text-gray-900 placeholder:text-gray-500";
 function DateField({ph}:{ph:string}){
   const [v,setV]=useState("");const [d,setD]=useState(false);
   return <div className="relative"><Cal/><input type={d||v?"date":"text"} placeholder={ph} aria-label={ph} value={v} onChange={e=>setV(e.target.value)}
@@ -44,7 +44,7 @@ export default function Home(){
     </div>
     </>
     <section className="mx-auto -mt-9 max-w-6xl px-4">
-      <div className="grid grid-cols-2 gap-1 rounded-xl border-4 border-yellow-400 bg-yellow-400 shadow-2xl md:grid-cols-[2fr_1fr_1fr_1.3fr_auto]">
+      <div className="grid grid-cols-2 gap-2 rounded-xl border-2 border-yellow-400 bg-white p-3 shadow-2xl md:grid-cols-[2fr_1fr_1fr_1.3fr_auto] md:gap-1 md:border-4 md:bg-yellow-400 md:p-0">
         <div className="relative col-span-2 md:col-span-1"><Pin/><select value={dest} onChange={e=>setDest(e.target.value)} className={`${fld} ${dest?"":"text-gray-500"}`}><option value="">Where are you going?</option>{CITIES.map(c=><option key={c}>{c}</option>)}</select></div>
         <DateField ph="Check-in date"/>
         <DateField ph="Check-out date"/>
