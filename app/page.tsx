@@ -7,6 +7,16 @@ function Img({s,className=""}:{s:string;className?:string}){
   // eslint-disable-next-line @next/next/no-img-element
   return bad?<div className={`bg-gray-200 ${className}`}/>:<img src={img(s)} alt="" loading="lazy" onError={()=>setBad(true)} className={`object-cover ${className}`}/>;
 }
+const ic="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500";
+const Pin=()=><svg className={ic} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg>;
+const Cal=()=><svg className={ic} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>;
+const Usr=()=><svg className={ic} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>;
+const fld="h-14 w-full rounded-md bg-white pl-10 pr-3 font-medium text-gray-900 placeholder:text-gray-500";
+function DateField({ph}:{ph:string}){
+  const [v,setV]=useState("");const [d,setD]=useState(false);
+  return <div className="relative"><Cal/><input type={d||v?"date":"text"} placeholder={ph} aria-label={ph} value={v} onChange={e=>setV(e.target.value)}
+    onFocus={e=>{setD(true);const el=e.target as HTMLInputElement;setTimeout(()=>{try{el.showPicker?.()}catch{}},50)}} onBlur={()=>{if(!v)setD(false)}} className={fld}/></div>;
+}
 const slug=(c:string)=>({"Cairo":"cairo","Hurghada":"hurghada","Sharm El Sheikh":"sharm","Marsa Alam":"marsa-alam","Luxor":"luxor","Aswan":"aswan","Alexandria":"alexandria"} as Record<string,string>)[c]||"cairo";
 const count=(city:string)=>TOURS.filter(t=>t.city===city).length;
 
@@ -21,9 +31,9 @@ export default function Home(){
     <>
     <div className="bg-[#f5f5f5] text-xs text-gray-700"><div className="mx-auto flex max-w-6xl justify-between px-4 py-1.5"><span>Discover Jordan &amp; Egypt</span><span>www.wecheapertours.com</span></div></div>
     <header className="bg-white shadow">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="WeCheaperTours.com" className="h-11 w-11"/><span className="text-lg font-bold"><span className="text-[#FF8C00]">WeCheaper</span> <span className="text-[#1a1a1a]">Tours</span></span></div>
-        <nav className="noscroll flex gap-1 overflow-x-auto text-sm text-[#1a1a1a]">{["Tours","Nile Cruises","Diving","Rentals","Support"].map((m,i)=><a key={m} href="#tours" className={`whitespace-nowrap rounded-full px-3 py-2 ${i==0?"bg-orange-50 font-semibold text-orange-600":"hover:bg-gray-100"}`}>{m}</a>)}</nav>
+      <div className="mx-auto flex max-w-6xl flex-col items-start gap-2 px-4 py-3 md:flex-row md:items-center md:justify-between">
+        <div className="flex shrink-0 items-center gap-2"><img src="/logo-emblem.png" alt="WeCheaperTours.com" className="h-8 w-8 shrink-0 md:h-11 md:w-11"/><span className="whitespace-nowrap text-lg font-bold"><span className="text-[#FF8C00]">WeCheaper</span> <span className="text-[#1a1a1a]">Tours</span></span></div>
+        <nav className="noscroll -mx-1 flex w-full gap-1 overflow-x-auto text-sm text-[#1a1a1a] md:mx-0 md:w-auto">{["Tours","Nile Cruises","Diving","Rentals","Support"].map((m,i)=><a key={m} href="#tours" className={`whitespace-nowrap rounded-full px-3 py-2 ${i==0?"bg-orange-50 font-semibold text-orange-600":"hover:bg-gray-100"}`}>{m}</a>)}</nav>
       </div>
     </header>
     <div className="bg-bk text-white">
@@ -34,14 +44,14 @@ export default function Home(){
     </div>
     </>
     <section className="mx-auto -mt-9 max-w-6xl px-4">
-      <div className="grid gap-1 rounded-md border-4 border-yellow-400 bg-yellow-400 md:grid-cols-[2fr_1fr_1fr_1.3fr_auto]">
-        <select value={dest} onChange={e=>setDest(e.target.value)} className="h-14 rounded-sm bg-white px-3"><option value="">Where are you going?</option>{CITIES.map(c=><option key={c}>{c}</option>)}</select>
-        <input type="date" aria-label="Check-in" className="h-14 rounded-sm bg-white px-3"/>
-        <input type="date" aria-label="Check-out" className="h-14 rounded-sm bg-white px-3"/>
-        <select className="h-14 rounded-sm bg-white px-3"><option>2 adults · 0 children · 1 tour</option><option>1 adult · 0 children · 1 tour</option><option>4 adults · 2 children · 1 tour</option></select>
-        <button onClick={go} className="h-14 rounded-sm bg-[#FF8C00] px-8 text-lg font-bold text-white hover:bg-orange-600">Search</button>
+      <div className="grid grid-cols-2 gap-1 rounded-xl border-4 border-yellow-400 bg-yellow-400 shadow-2xl md:grid-cols-[2fr_1fr_1fr_1.3fr_auto]">
+        <div className="relative col-span-2 md:col-span-1"><Pin/><select value={dest} onChange={e=>setDest(e.target.value)} className={`${fld} ${dest?"":"text-gray-500"}`}><option value="">Where are you going?</option>{CITIES.map(c=><option key={c}>{c}</option>)}</select></div>
+        <DateField ph="Check-in date"/>
+        <DateField ph="Check-out date"/>
+        <div className="relative col-span-2 md:col-span-1"><Usr/><select className={fld}><option>2 adults · 0 children · 1 tour</option><option>1 adult · 0 children · 1 tour</option><option>4 adults · 2 children · 1 tour</option></select></div>
+        <button onClick={go} className="col-span-2 h-14 rounded-md bg-[#FF8C00] px-8 text-lg font-bold text-white hover:bg-orange-600 md:col-span-1">Search</button>
       </div>
-      <label className="mt-3 flex items-center gap-2 text-sm"><input type="checkbox"/> I&apos;m traveling for work</label>
+      <label className="mt-3 flex items-center gap-2 text-sm"><input type="checkbox" className="h-4 w-4 accent-orange-500"/> I&apos;m traveling for work</label>
 
       <h2 className="mt-8 text-2xl font-bold">Offers</h2><p className="text-gray-600">Promotions, deals and special offers for you</p>
       <div className="mt-3 flex items-center justify-between gap-4 rounded-lg border p-4 md:max-w-xl">
