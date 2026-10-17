@@ -16,32 +16,37 @@ export default function Home(){
   const [dest,setDest]=useState("");
   const list=useMemo(()=>TOURS.filter(t=>(city==="All"||t.city===city)&&(svc==="All"||t.service===svc)),[city,svc]);
   const go=()=>{setCity(dest||"All");document.getElementById("tours")?.scrollIntoView({behavior:"smooth"})};
-  const pill=(on:boolean)=>`whitespace-nowrap rounded-full border px-4 py-1.5 text-sm ${on?"border-bkb bg-blue-50 text-bkb":"border-gray-300"}`;
+  const pill=(on:boolean)=>`whitespace-nowrap rounded-full border px-4 py-1.5 text-sm ${on?"border-orange-500 bg-orange-50 font-semibold text-orange-600":"border-gray-300"}`;
   return(<main>
-    <header className="bg-bk text-white">
+    <>
+    <div className="bg-[#f5f5f5] text-xs text-gray-700"><div className="mx-auto flex max-w-6xl justify-between px-4 py-1.5"><span>Discover Jordan &amp; Egypt</span><span>www.wecheapertours.com</span></div></div>
+    <header className="bg-white shadow">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        <div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="WeCheaperTours.com" className="h-11 w-11"/><span className="hidden font-bold sm:block">WeCheaperTours.com</span></div>
-        <nav className="noscroll flex gap-1 overflow-x-auto text-sm">{["Tours","Nile Cruises","Diving","Rentals","Support"].map((m,i)=><a key={m} href="#tours" className={`whitespace-nowrap rounded-full border px-3 py-2 ${i==0?"border-white bg-white/10":"border-transparent hover:bg-white/10"}`}>{m}</a>)}</nav>
-      </div>
-      <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 md:pb-28">
-        <h1 className="text-3xl font-bold md:text-5xl">Find your next Egypt adventure</h1>
-        <p className="mt-2 text-lg md:text-xl">Search low prices on tours, cruises, diving &amp; more...</p>
+        <div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="WeCheaperTours.com" className="h-11 w-11"/><span className="text-lg font-bold"><span className="text-[#FF8C00]">WeCheaper</span> <span className="text-[#1a1a1a]">Tours</span></span></div>
+        <nav className="noscroll flex gap-1 overflow-x-auto text-sm text-[#1a1a1a]">{["Tours","Nile Cruises","Diving","Rentals","Support"].map((m,i)=><a key={m} href="#tours" className={`whitespace-nowrap rounded-full px-3 py-2 ${i==0?"bg-orange-50 font-semibold text-orange-600":"hover:bg-gray-100"}`}>{m}</a>)}</nav>
       </div>
     </header>
+    <div className="bg-bk text-white">
+      <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 md:pb-28">
+        <h1 className="text-3xl font-bold md:text-5xl">Find your next <span className="text-yellow-400">Egypt adventure</span></h1>
+        <p className="mt-2 text-lg md:text-xl">Search low prices on tours, cruises, diving &amp; more...</p>
+      </div>
+    </div>
+    </>
     <section className="mx-auto -mt-9 max-w-6xl px-4">
-      <div className="grid gap-1 rounded-md border-4 border-bky bg-bky md:grid-cols-[2fr_1fr_1fr_1.3fr_auto]">
+      <div className="grid gap-1 rounded-md border-4 border-yellow-400 bg-yellow-400 md:grid-cols-[2fr_1fr_1fr_1.3fr_auto]">
         <select value={dest} onChange={e=>setDest(e.target.value)} className="h-14 rounded-sm bg-white px-3"><option value="">Where are you going?</option>{CITIES.map(c=><option key={c}>{c}</option>)}</select>
         <input type="date" aria-label="Check-in" className="h-14 rounded-sm bg-white px-3"/>
         <input type="date" aria-label="Check-out" className="h-14 rounded-sm bg-white px-3"/>
         <select className="h-14 rounded-sm bg-white px-3"><option>2 adults · 0 children · 1 tour</option><option>1 adult · 0 children · 1 tour</option><option>4 adults · 2 children · 1 tour</option></select>
-        <button onClick={go} className="h-14 rounded-sm bg-bkb px-8 text-lg font-semibold text-white hover:bg-bk">Search</button>
+        <button onClick={go} className="h-14 rounded-sm bg-[#FF8C00] px-8 text-lg font-bold text-white hover:bg-orange-600">Search</button>
       </div>
       <label className="mt-3 flex items-center gap-2 text-sm"><input type="checkbox"/> I&apos;m traveling for work</label>
 
       <h2 className="mt-8 text-2xl font-bold">Offers</h2><p className="text-gray-600">Promotions, deals and special offers for you</p>
       <div className="mt-3 flex items-center justify-between gap-4 rounded-lg border p-4 md:max-w-xl">
         <div><p className="text-xs text-gray-500">Early booking</p><h3 className="font-bold">15% off early booking Egypt tours</h3><p className="text-sm">Book ahead and save on tours across Egypt.</p>
-          <a href="#tours" className="mt-3 inline-block rounded bg-bkb px-3 py-2 text-sm text-white">Search deals</a></div>
+          <a href="#tours" className="mt-3 inline-block rounded bg-[#FF8C00] px-3 py-2 text-sm font-bold text-white hover:bg-orange-600">Search deals</a></div>
         <Img s="offer" className="h-24 w-24 shrink-0 rounded-lg"/></div>
 
       <h2 className="mt-10 text-2xl font-bold">Browse by city</h2>
@@ -67,17 +72,17 @@ export default function Home(){
       <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{list.slice(0,12).map(t=>
         <article key={t.id} className="overflow-hidden rounded-lg border bg-white">
           <Img s={t.slug} className="h-40 w-full"/>
-          <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-bkb">{t.title}</h3><p className="text-sm text-gray-600">{t.city}</p>
+          <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-orange-500">{t.title}</h3><p className="text-sm text-gray-600">{t.city}</p>
             <p className="mt-2 flex items-center gap-2 text-sm"><span className="rounded bg-bk px-1.5 py-0.5 font-bold text-white">{t.rating}</span>Superb · {t.reviews} reviews</p>
             <p className="mt-2 text-right text-sm text-gray-500">from <b className="text-lg text-black">${t.price}</b></p>
-            <button className="mt-2 w-full rounded bg-bkb py-2 text-sm font-semibold text-white">Check availability</button></div></article>)}
+            <button className="mt-2 w-full rounded bg-[#FF8C00] py-2 text-sm font-bold text-white hover:bg-orange-600">Check availability</button></div></article>)}
         {!list.length&&<p className="col-span-full py-8 text-center text-gray-500">No tours match these filters yet.</p>}</div>
     </section>
-    <footer className="mt-16 bg-gray-50 py-10 text-sm">
-      <div className="mx-auto mb-6 max-w-6xl px-4"><img src="/logo-full.png" alt="WeCheaperTours.com" className="h-24"/></div>
+    <footer className="mt-16 bg-bk py-10 text-sm text-white">
+      <div className="mx-auto mb-6 max-w-6xl px-4"><div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="" className="h-12 w-12"/><span className="text-lg font-bold"><span className="text-[#FF8C00]">WeCheaper</span> Tours</span></div></div>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
         {[["Support",["Manage your trips","Contact Customer Service","Safety resource centre"]],["Discover",["Tours","Nile Cruises","Car rentals","Vacation rentals"]],["Terms and settings",["Privacy & cookies","Terms of Service","Accessibility"]],["About",["About WeCheaperTours","How we work","Careers","Contact"]]].map(([h,l])=>
-        <div key={h as string}><h4 className="mb-2 font-bold">{h as string}</h4>{(l as string[]).map(x=><p key={x} className="py-0.5 text-bkb">{x}</p>)}</div>)}</div>
-      <p className="mt-8 text-center text-gray-500">© WeCheaperTours.com – Discover Jordan &amp; Egypt</p></footer>
+        <div key={h as string}><h4 className="mb-2 font-bold">{h as string}</h4>{(l as string[]).map(x=><p key={x} className="py-0.5 text-gray-200">{x}</p>)}</div>)}</div>
+      <p className="mt-8 text-center text-gray-300">© WeCheaperTours.com – Discover Jordan &amp; Egypt</p></footer>
   </main>);
 }
