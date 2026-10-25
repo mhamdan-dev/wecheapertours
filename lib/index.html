@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WeCheaperTours | Egypt Travel</title>
+<meta name="description" content="Excursions, Nile cruises, car rentals, vacation rentals, concierge and event planning across Egypt.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = { theme: { extend: { fontFamily: { sans: ['Inter','ui-sans-serif','system-ui','sans-serif'] }, colors: { brand: { DEFAULT:'#0062ff', dark:'#0049c4', light:'#eaf2ff' } } } } }
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  .lift { transition: transform .25s ease, box-shadow .25s ease; }
+  .lift:hover { transform: translateY(-6px); box-shadow: 0 20px 40px -12px rgba(0,98,255,.25); }
+  .hero-bg { background:
+     radial-gradient(900px 400px at 85% -10%, rgba(255,255,255,.18), transparent 60%),
+     linear-gradient(135deg, #0049c4 0%, #0062ff 55%, #3d8bff 100%); }
+</style>
+</head>
+<body class="font-sans text-slate-800 bg-white antialiased">
+
+<!-- Demo badge -->
+<div class="bg-slate-900 text-white text-center text-xs sm:text-sm py-2 px-4 font-medium tracking-wide">
+  DEMO by Hamdan - WeCheaperTours Redesign
+</div>
+
+<!-- Header -->
+<header class="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2 font-extrabold text-xl text-slate-900">
+      <span class="w-9 h-9 rounded-xl bg-brand text-white grid place-items-center text-lg">W</span>
+      We<span class="text-brand">Cheaper</span>Tours
+    </a>
+    <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
+      <a class="hover:text-brand transition" href="#excursions">Excursions</a>
+      <a class="hover:text-brand transition" href="#packages">Packages</a>
+      <a class="hover:text-brand transition" href="#cruises">Nile Cruises</a>
+      <a class="hover:text-brand transition" href="#cars">Car Rentals</a>
+      <a class="hover:text-brand transition" href="#stays">Stays</a>
+      <a class="hover:text-brand transition" href="#concierge">Concierge</a>
+    </nav>
+    <a href="#concierge" class="hidden sm:inline-flex bg-brand hover:bg-brand-dark text-white text-sm font-semibold px-5 py-2.5 rounded-full transition">Get in touch</a>
+    <button id="menuBtn" class="lg:hidden p-2 rounded-lg hover:bg-slate-100" aria-label="Menu">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden lg:hidden border-t border-slate-100 bg-white px-4 py-3 text-sm font-semibold text-slate-700 grid gap-1">
+    <a class="py-2" href="#excursions">Excursions</a>
+    <a class="py-2" href="#packages">Packages</a>
+    <a class="py-2" href="#cruises">Nile Cruises</a>
+    <a class="py-2" href="#cars">Car Rentals</a>
+    <a class="py-2" href="#stays">Stays</a>
+    <a class="py-2" href="#concierge">Concierge</a>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- Hero -->
+<section class="hero-bg text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-16 pb-28 sm:pt-24 sm:pb-36">
+    <p class="inline-block bg-white/15 border border-white/25 rounded-full px-4 py-1.5 text-xs sm:text-sm font-semibold mb-6">Egypt Travel | WeCheaperTours</p>
+    <h1 class="text-4xl sm:text-6xl font-extrabold leading-tight max-w-3xl">Explore Egypt's Most Iconic Landmarks</h1>
+    <p class="mt-5 text-lg text-blue-50 max-w-xl">Top-rated local guides, Nile cruises, stays and a personal concierge, all in one place.</p>
+  </div>
+</section>
+
+<!-- Search bar -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 -mt-16 sm:-mt-20 relative z-10">
+  <form onsubmit="return false" class="bg-white rounded-2xl shadow-2xl shadow-blue-900/10 border border-slate-100 p-3 sm:p-4 grid gap-3 md:grid-cols-[1.6fr_1fr_1fr_auto] items-center">
+    <label class="block bg-slate-50 hover:bg-brand-light transition rounded-xl px-4 py-3">
+      <span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Where to?</span>
+      <input type="text" placeholder="e.g., Cairo, Luxor, Sharm" class="w-full bg-transparent outline-none font-semibold text-slate-800 placeholder-slate-400">
+    </label>
+    <label class="block bg-slate-50 hover:bg-brand-light transition rounded-xl px-4 py-3">
+      <span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Date</span>
+      <input type="date" class="w-full bg-transparent outline-none font-semibold text-slate-800">
+    </label>
+    <label class="block bg-slate-50 hover:bg-brand-light transition rounded-xl px-4 py-3">
+      <span class="block text-[11px] uppercase tracking-wider font-bold text-slate-400">Guests</span>
+      <select class="w-full bg-transparent outline-none font-semibold text-slate-800">
+        <option>1 guest</option><option selected>2 guests</option><option>3 guests</option><option>4 guests</option><option>5+ guests</option>
+      </select>
+    </label>
+    <button class="bg-brand hover:bg-brand-dark text-white font-bold rounded-xl px-8 py-4 transition w-full md:w-auto">Search</button>
+  </form>
+</section>
+
+<!-- Section 1: Excursions -->
+<section id="excursions" class="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+  <div class="flex items-end justify-between flex-wrap gap-2 mb-8">
+    <div>
+      <p class="text-brand font-bold text-sm uppercase tracking-wider">Section 1</p>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">🗺️ Excursions &amp; Day Tours</h2>
+      <p class="text-slate-500 mt-2">Explore Egypt's most iconic landmarks with top-rated local guides.</p>
+    </div>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-6"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">🔺</div><h3 class="font-bold text-lg">Cairo &amp; Giza</h3><p class="text-sm text-slate-500 mt-1">Pyramids, Sphinx, Egyptian Museum, &amp; Khan El-Khalili</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-6"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">🏰</div><h3 class="font-bold text-lg">Alexandria</h3><p class="text-sm text-slate-500 mt-1">Citadel of Qaitbay, Catacombs, &amp; Mediterranean Coastal Tour</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-6"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">🏛️</div><h3 class="font-bold text-lg">Luxor</h3><p class="text-sm text-slate-500 mt-1">Valley of the Kings, Karnak, &amp; Luxor Temples</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-6"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">☀️</div><h3 class="font-bold text-lg">Aswan &amp; Abu Simbel</h3><p class="text-sm text-slate-500 mt-1">Philae Temple, High Dam, &amp; Magnificent Sun Temples</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-6"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">🤿</div><h3 class="font-bold text-lg">Sharm El-Sheikh</h3><p class="text-sm text-slate-500 mt-1">Ras Mohamed Snorkeling, Desert Safari, &amp; Quad Biking</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-6"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">⛵</div><h3 class="font-bold text-lg">Hurghada</h3><p class="text-sm text-slate-500 mt-1">Giftun Island Boat Trips, Coral Reef Scuba, &amp; Desert Adventures</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-6"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">🐬</div><h3 class="font-bold text-lg">Marsa Alam</h3><p class="text-sm text-slate-500 mt-1">Sataya Dolphin Reef, Abu Dabbab Beach, &amp; Marine Life Tours</p></article>
+    <article class="lift rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-md p-6 flex flex-col justify-between">
+      <div><div class="text-3xl mb-4">✨</div><h3 class="font-bold text-lg">Not sure where to start?</h3><p class="text-sm text-blue-100 mt-1">Our concierge team will plan your day tours for you.</p></div>
+      <a href="#concierge" class="mt-4 inline-block font-semibold text-sm underline underline-offset-4">Talk to us &rarr;</a>
+    </article>
+  </div>
+</section>
+
+<!-- Sections 2 & 3: Packages + Nile Cruises -->
+<section id="packages" class="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+  <div class="mb-8" id="cruises">
+    <p class="text-brand font-bold text-sm uppercase tracking-wider">Sections 2 &amp; 3</p>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">📦 Package Tours &amp; 🚢 Nile Cruises</h2>
+    <p class="text-slate-500 mt-2">All-inclusive holiday packages, and a sail through thousands of years of history along the majestic River Nile.</p>
+  </div>
+  <div class="grid md:grid-cols-3 gap-6">
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden">
+      <div class="h-36 bg-gradient-to-br from-sky-400 to-brand grid place-items-center text-6xl">🚢</div>
+      <div class="p-6">
+        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full">🛠️ Under Preparation</span>
+        <h3 class="font-extrabold text-xl mt-3">4 Nights / 5 Days</h3>
+        <p class="text-slate-500 mt-1">Luxor ➔ Aswan (Downstream)</p>
+      </div>
+    </article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden">
+      <div class="h-36 bg-gradient-to-br from-indigo-400 to-brand grid place-items-center text-6xl">⛴️</div>
+      <div class="p-6">
+        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full">🛠️ Under Preparation</span>
+        <h3 class="font-extrabold text-xl mt-3">3 Nights / 4 Days</h3>
+        <p class="text-slate-500 mt-1">Aswan ➔ Luxor (Upstream)</p>
+      </div>
+    </article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden">
+      <div class="h-36 bg-gradient-to-br from-blue-500 to-brand-dark grid place-items-center text-6xl">🌅</div>
+      <div class="p-6">
+        <span class="inline-flex items-center gap-1 bg-amber-50 text-amber-700 border border-amber-200 text-xs font-bold px-3 py-1 rounded-full">🛠️ Under Preparation</span>
+        <h3 class="font-extrabold text-xl mt-3">7 Nights / 8 Days</h3>
+        <p class="text-slate-500 mt-1">Luxor ➔ Aswan ➔ Luxor (Roundtrip)</p>
+      </div>
+    </article>
+  </div>
+  <p class="mt-5 text-sm text-slate-500 bg-brand-light rounded-xl px-4 py-3">🛠️ Full packages launching soon. Dahabiya luxury sailboats and traditional felucca cruises are on the way too.</p>
+</section>
+
+<!-- Section 6: Cars & Ferries -->
+<section id="cars" class="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+  <div class="mb-8">
+    <p class="text-brand font-bold text-sm uppercase tracking-wider">Section 6</p>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">🚗 Car Rentals &amp; Ferry Crossings</h2>
+    <p class="text-slate-500 mt-2">Travel at your own pace across land and sea.</p>
+  </div>
+  <div class="grid lg:grid-cols-2 gap-6">
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-md p-6 sm:p-8">
+      <h3 class="font-bold text-lg mb-1">🚘 City Car Rentals</h3>
+      <p class="text-sm text-slate-500 mb-5">With or without driver</p>
+      <div class="flex flex-wrap gap-2.5">
+        <span class="px-4 py-2 rounded-full bg-brand-light text-brand font-semibold text-sm hover:bg-brand hover:text-white transition cursor-default">Cairo</span>
+        <span class="px-4 py-2 rounded-full bg-brand-light text-brand font-semibold text-sm hover:bg-brand hover:text-white transition cursor-default">Luxor</span>
+        <span class="px-4 py-2 rounded-full bg-brand-light text-brand font-semibold text-sm hover:bg-brand hover:text-white transition cursor-default">Sharm</span>
+        <span class="px-4 py-2 rounded-full bg-brand-light text-brand font-semibold text-sm hover:bg-brand hover:text-white transition cursor-default">Hurghada</span>
+        <span class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-semibold text-sm">Alexandria</span>
+        <span class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-semibold text-sm">Aswan &amp; Abu Simbel</span>
+        <span class="px-4 py-2 rounded-full bg-slate-100 text-slate-600 font-semibold text-sm">Marsa Alam</span>
+      </div>
+    </div>
+    <div class="bg-white rounded-2xl border border-slate-100 shadow-md p-6 sm:p-8">
+      <h3 class="font-bold text-lg mb-5">⛴️ Ferry Boat Crossings</h3>
+      <div class="grid gap-4">
+        <div class="lift rounded-xl border border-slate-100 p-4 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-brand text-white grid place-items-center text-xl">🚢</div>
+          <div><p class="font-bold">Taba ⇄ Aqaba</p><p class="text-sm text-slate-500">Egypt to Jordan Red Sea Ferry</p></div>
+        </div>
+        <div class="lift rounded-xl border border-slate-100 p-4 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-brand text-white grid place-items-center text-xl">⚡</div>
+          <div><p class="font-bold">Hurghada ⇄ Sharm El-Sheikh</p><p class="text-sm text-slate-500">Red Sea Fast Ferry Crossing</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 7: Stays -->
+<section id="stays" class="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+  <div class="mb-8">
+    <p class="text-brand font-bold text-sm uppercase tracking-wider">Section 7</p>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">🏡 Vacation Rentals &amp; Apartments</h2>
+    <p class="text-slate-500 mt-2">Handpicked private apartments, villas, and holiday homes.</p>
+  </div>
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden"><div class="h-40 bg-gradient-to-br from-amber-300 to-orange-500 grid place-items-center text-6xl">🔺</div><div class="p-5"><h3 class="font-bold text-lg">Cairo Pyramid View</h3><p class="text-sm text-slate-500 mt-1">Cairo &amp; Giza · Pyramid View &amp; City Center</p></div></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden"><div class="h-40 bg-gradient-to-br from-cyan-300 to-blue-500 grid place-items-center text-6xl">🌊</div><div class="p-5"><h3 class="font-bold text-lg">Alexandria Sea View</h3><p class="text-sm text-slate-500 mt-1">Mediterranean Sea View</p></div></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden"><div class="h-40 bg-gradient-to-br from-emerald-300 to-teal-600 grid place-items-center text-6xl">🌴</div><div class="p-5"><h3 class="font-bold text-lg">Luxor Nile View</h3><p class="text-sm text-slate-500 mt-1">West Bank &amp; Nile View</p></div></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden"><div class="h-40 bg-gradient-to-br from-yellow-300 to-amber-600 grid place-items-center text-6xl">🏺</div><div class="p-5"><h3 class="font-bold text-lg">Aswan Nubian Riverside</h3><p class="text-sm text-slate-500 mt-1">Nubian Style &amp; Riverside</p></div></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden"><div class="h-40 bg-gradient-to-br from-sky-300 to-indigo-500 grid place-items-center text-6xl">🏖️</div><div class="p-5"><h3 class="font-bold text-lg">Sharm Beachfront Resort</h3><p class="text-sm text-slate-500 mt-1">Resort Apartments &amp; Beachfront</p></div></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md overflow-hidden"><div class="h-40 bg-gradient-to-br from-blue-300 to-brand grid place-items-center text-6xl">🏡</div><div class="p-5"><h3 class="font-bold text-lg">Hurghada Private Villa</h3><p class="text-sm text-slate-500 mt-1">Private Villas &amp; Sea View Flats</p></div></article>
+  </div>
+</section>
+
+<!-- Section 8: Concierge -->
+<section id="concierge" class="max-w-7xl mx-auto px-4 sm:px-6 pt-24">
+  <div class="mb-8">
+    <p class="text-brand font-bold text-sm uppercase tracking-wider">Section 8</p>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">🛎️ Personal Concierge Services</h2>
+    <p class="text-slate-500 mt-2">Your 24/7 personal assistant in Egypt. Whatever you need, we deliver.</p>
+  </div>
+  <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+    <div class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-5"><div class="text-3xl mb-3">🧺</div><h3 class="font-bold">Laundry &amp; Ironing</h3><p class="text-sm text-slate-500 mt-1">Express pickup &amp; delivery.</p></div>
+    <div class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-5"><div class="text-3xl mb-3">🛒</div><h3 class="font-bold">Groceries &amp; Beverages</h3><p class="text-sm text-slate-500 mt-1">Fresh supermarket delivery to your door.</p></div>
+    <div class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-5"><div class="text-3xl mb-3">🍔</div><h3 class="font-bold">Fast Food Delivery</h3><p class="text-sm text-slate-500 mt-1">McDonald's, KFC, and top local chains.</p></div>
+    <div class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-5"><div class="text-3xl mb-3">🦞</div><h3 class="font-bold">Fresh Dining</h3><p class="text-sm text-slate-500 mt-1">Seafood, grilled meats &amp; home-cooked <em>Akl Bety</em>.</p></div>
+    <div class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-5"><div class="text-3xl mb-3">🍯</div><h3 class="font-bold">Egyptian Desserts</h3><p class="text-sm text-slate-500 mt-1">Oriental sweets, baklava &amp; local pastries.</p></div>
+    <div class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-5"><div class="text-3xl mb-3">🛍️</div><h3 class="font-bold">Souvenir Shopping</h3><p class="text-sm text-slate-500 mt-1">Papyrus, Egyptian cotton, gold &amp; silver jewelry.</p></div>
+    <div class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-5"><div class="text-3xl mb-3">👑</div><h3 class="font-bold">Custom VIP Requests</h3><p class="text-sm text-slate-500 mt-1">Errands, transport booking &amp; bespoke assistance.</p></div>
+    <div class="lift rounded-2xl bg-gradient-to-br from-brand to-brand-dark text-white shadow-md p-5"><div class="text-3xl mb-3">🕐</div><h3 class="font-bold">24/7 Support</h3><p class="text-sm text-blue-100 mt-1">Always one message away during your stay.</p></div>
+  </div>
+</section>
+
+<!-- Section 9: Events -->
+<section id="events" class="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-24">
+  <div class="mb-8">
+    <p class="text-brand font-bold text-sm uppercase tracking-wider">Section 9</p>
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900">🎉 Event Planning &amp; Special Occasions</h2>
+    <p class="text-slate-500 mt-2">Unforgettable celebrations tailored to your dream setting.</p>
+  </div>
+  <div class="grid md:grid-cols-3 gap-6">
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-7"><div class="w-14 h-14 rounded-2xl bg-pink-50 grid place-items-center text-3xl mb-4">🎂</div><h3 class="font-bold text-xl">Birthday Parties</h3><p class="text-slate-500 mt-2">Private venue decoration, custom catering, and entertainment.</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-7"><div class="w-14 h-14 rounded-2xl bg-rose-50 grid place-items-center text-3xl mb-4">💖</div><h3 class="font-bold text-xl">Valentine's &amp; Anniversary</h3><p class="text-slate-500 mt-2">Romantic private dinners and setups.</p></article>
+    <article class="lift bg-white rounded-2xl border border-slate-100 shadow-md p-7"><div class="w-14 h-14 rounded-2xl bg-brand-light grid place-items-center text-3xl mb-4">✨</div><h3 class="font-bold text-xl">Custom Events on a Nile Cruise</h3><p class="text-slate-500 mt-2">Private gatherings on Nile cruise boats, panoramic pyramids-view venues, high-end restaurants, and boutique cafes.</p></article>
+  </div>
+</section>
+
+</main>
+
+<!-- Footer -->
+<footer class="bg-slate-900 text-slate-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-10 flex flex-col sm:flex-row items-center justify-between gap-4">
+    <div class="flex items-center gap-2 font-extrabold text-white text-lg">
+      <span class="w-8 h-8 rounded-lg bg-brand grid place-items-center">W</span> WeCheaperTours
+    </div>
+    <p class="text-sm">&copy; WeCheaperTours 2026</p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('menuBtn').addEventListener('click', function () {
+    document.getElementById('mobileMenu').classList.toggle('hidden');
+  });
+  document.querySelectorAll('#mobileMenu a').forEach(function (a) {
+    a.addEventListener('click', function () { document.getElementById('mobileMenu').classList.add('hidden'); });
+  });
+</script>
+</body>
+</html>
