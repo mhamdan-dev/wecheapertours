@@ -35,7 +35,7 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
       <h1 className="text-2xl font-bold md:text-3xl">{title}</h1>
       <div className="mt-3 flex gap-2"><input value={q} onChange={e=>setQ(e.target.value)} placeholder={`Search ${cruise?"cruises":"tours"} by name...`} className="h-12 w-full rounded-md border-2 border-yellow-400 px-4"/>
         <button onClick={()=>setOpen(!open)} className="h-12 rounded-md border px-4 font-semibold md:hidden">Filters</button></div>
-      <div className="mt-6 grid gap-6 md:grid-cols-[260px_1fr]">
+      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-[260px_minmax(0,1fr)]">
         <aside className={`${open?"block":"hidden"} md:block`}>
           <div className="rounded-lg border p-4">
             <div className="flex items-center justify-between"><h2 className="text-lg font-bold">Filter by</h2><button onClick={reset} className="text-sm text-[#FF6B00]">Reset</button></div>
@@ -46,7 +46,7 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
               :<G t="Category"><Chips o={["All","Sea Trips","Cultural Tours","Desert Excursions"]} v={type} s={setType}/></G>}
             {cruise&&<G t="Rating"><Chips o={["Any","8+","9+"]} v={rate===0?"Any":`${rate}+`} s={x=>setRate(x==="Any"?0:parseInt(x))}/></G>}
           </div></aside>
-        <section>
+        <section className="min-w-0">
           <div className="mb-3 flex items-center justify-between"><p className="text-sm text-gray-600">{list.length} {cruise?"cruises":"tours"} found</p>
             <select value={sort} onChange={e=>setSort(e.target.value)} className="h-10 rounded-md border px-2 text-sm"><option value="rec">Recommended</option>{cruise&&<><option value="pl">Price: low to high</option><option value="ph">Price: high to low</option><option value="rt">Top rated</option></>}</select></div>
           {!list.length&&<div className="mb-4 rounded-lg border bg-gray-50 p-4 text-sm">No {cruise?"cruises":"tours"} match these filters yet. <button onClick={reset} className="font-semibold text-[#FF6B00]">Clear filters</button> – showing popular ones:</div>}

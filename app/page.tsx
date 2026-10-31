@@ -74,7 +74,7 @@ export default function Home(){
           <span className="absolute left-3 top-3 text-xl font-bold text-white">{c} 🇪🇬</span></button>)}</div>
 
       <h2 className="mt-10 text-2xl font-bold">Explore Egypt</h2><p className="text-gray-600">Services and experiences WeCheaperTours offers</p>
-      <div className="mt-3 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{EXPLORE.map(e=>
+      <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">{EXPLORE.map(e=>
         <a key={e.slug} href={e.href} className="block overflow-hidden rounded-lg border hover:shadow-md">
           <div className="relative"><Img s={e.slug} className="h-36 w-full"/>{e.st&&<span className={`absolute left-2 top-2 rounded px-2 py-1 text-xs font-semibold text-white ${e.st.startsWith("Under")?"bg-orange-600":"bg-red-700"}`}>{e.st}</span>}</div>
           <div className="p-3"><h3 className="font-bold">{e.t}</h3><p className="text-sm text-gray-600">{e.s}</p></div></a>)}</div>
@@ -82,7 +82,7 @@ export default function Home(){
       <h2 id="tours" className="mt-10 scroll-mt-4 text-2xl font-bold">Popular tours</h2><p className="text-gray-600">Pick a city and a service to filter</p>
       <div className="noscroll mt-3 flex gap-2 overflow-x-auto">{["All",...CITIES].map(c=><button key={c} onClick={()=>setCity(c)} className={pill(city===c)}>{c}</button>)}</div>
       <div className="noscroll mt-2 flex gap-2 overflow-x-auto">{TYPES.map(s=><button key={s} onClick={()=>setSvc(s)} className={pill(svc===s)}>{s}</button>)}</div>
-      <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{list.slice(0,12).map(t=>
+      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">{list.slice(0,12).map(t=>
         <article key={t.id} className="overflow-hidden rounded-lg border bg-white">
           <a href={`/tours/${t.id}`}><img src={t.image} alt={t.name} loading="lazy" className="h-40 w-full bg-gray-200 object-cover"/></a>
           <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-orange-500"><a href={`/tours/${t.id}`}>{t.name}</a></h3><p className="text-sm text-gray-600">{t.city} · {t.duration}</p>
@@ -93,7 +93,7 @@ export default function Home(){
     </section>
     <footer className="mt-16 bg-bk py-10 text-sm text-white">
       <div className="mx-auto mb-6 max-w-6xl px-4"><div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="" className="h-12 w-12"/><span className="text-lg font-bold"><span className="text-[#FF6B00]">WeCheaper</span> Tours</span></div></div>
-      <div className="mx-auto grid max-w-6xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
         {[["Support",["Manage your trips","Contact Customer Service","Safety resource centre"]],["Discover",["Tours","Nile Cruises","Car rentals","Vacation rentals"]],["Terms and settings",["Privacy & cookies","Terms of Service","Accessibility"]],["About",["About WeCheaperTours","How we work","Careers","Contact"]]].map(([h,l])=>
         <div key={h as string}><h4 className="mb-2 font-bold">{h as string}</h4>{(l as string[]).map(x=><p key={x} className="py-0.5 text-gray-200">{x}</p>)}</div>)}</div>
       <p className="mt-8 text-center text-gray-300">© WeCheaperTours.com – Discover Jordan &amp; Egypt</p></footer>
