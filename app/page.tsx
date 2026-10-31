@@ -3,7 +3,7 @@ import {useMemo,useState} from "react";
 import {wa} from "@/lib/wa";
 import {BROWSE,CITIES,EXPLORE,TRENDING,img} from "@/data/content";
 import {TOURS} from "@/data/mockTours";
-const TYPES=["All","Classic Cairo","Coastal","Desert Safari","Sinai","Express Getaway","Southern Circuit"];
+const TYPES=["All","Sea Trips","Cultural Tours","Desert Excursions"];
 
 function Img({s,className=""}:{s:string;className?:string}){
   const [bad,setBad]=useState(false);
@@ -20,7 +20,7 @@ function DateField({ph}:{ph:string}){
   return <div className="relative"><Cal/><input type={d||v?"date":"text"} placeholder={ph} aria-label={ph} value={v} onChange={e=>setV(e.target.value)}
     onFocus={e=>{setD(true);const el=e.target as HTMLInputElement;setTimeout(()=>{try{el.showPicker?.()}catch{}},50)}} onBlur={()=>{if(!v)setD(false)}} className={fld}/></div>;
 }
-const slug=(c:string)=>({"Cairo":"cairo","Hurghada":"hurghada","Sharm El Sheikh":"sharm","Marsa Alam":"marsa-alam","Luxor":"luxor","Aswan":"aswan","Alexandria":"alexandria","Siwa":"siwa","Fayoum":"fayoum","Sinai":"sinai","White Desert":"white-desert"} as Record<string,string>)[c]||"cairo";
+const slug=(c:string)=>({"Cairo":"cairo","Hurghada":"hurghada","Sharm El Sheikh":"sharm","Marsa Alam":"marsa-alam","Luxor":"luxor","Aswan":"aswan","Alexandria":"alexandria","Siwa":"siwa","Fayoum":"fayoum","Sinai":"sinai","White Desert":"white-desert","Sharm El-Sheikh":"sharm"} as Record<string,string>)[c]||"cairo";
 const count=(city:string)=>TOURS.filter(t=>t.city===city).length;
 
 export default function Home(){
@@ -88,7 +88,7 @@ export default function Home(){
           <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-orange-500"><a href={`/tours/${t.id}`}>{t.name}</a></h3><p className="text-sm text-gray-600">{t.city} · {t.duration}</p>
             <p className="mt-2 text-sm text-gray-600">{t.type}</p>
             <p className="mt-2 text-right font-bold text-gray-700">{t.onRequest?"Price on request":<>from ${t.price}</>}</p>
-            <a href={wa(`Hi I want to book ${t.name} for my preferred date`)} target="_blank" rel="noreferrer" className="mt-2 block w-full rounded bg-[#FF6B00] py-2 text-center text-sm font-bold text-white hover:bg-orange-600">Check availability</a></div></article>)}
+            <a href={wa(`Hi, I need help with ${t.name} on [date]. From WeCheaperTours site.`)} target="_blank" rel="noreferrer" className="mt-2 block w-full rounded bg-[#FF6B00] py-2 text-center text-sm font-bold text-white hover:bg-orange-600">Check availability</a></div></article>)}
         {!list.length&&<p className="col-span-full py-8 text-center text-gray-500">No tours match this combination – try another city or service.</p>}</div>
     </section>
     <footer className="mt-16 bg-bk py-10 text-sm text-white">

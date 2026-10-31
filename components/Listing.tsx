@@ -7,7 +7,7 @@ import {CITIES} from "@/data/content";
 import {Header,Footer} from "./Chrome";
 
 const DUR=["All","Day trip (1 day)","2 days","3+ days"];
-const durOk=(h:number,d:string)=>d==="All"||(d===DUR[1]&&h<=12)||(d===DUR[2]&&h>12&&h<=48)||(d===DUR[3]&&h>48);
+const durOk=(h:number,d:string)=>d==="All"||(d===DUR[1]&&h<=24)||(d===DUR[2]&&h>24&&h<=48)||(d===DUR[3]&&h>48);
 function Chips({o,v,s}:{o:string[];v:string;s:(x:string)=>void}){
   return <div className="flex flex-wrap gap-2">{o.map(x=><button key={x} onClick={()=>s(x)} className={`rounded-full border px-3 py-1 text-sm ${v===x?"border-[#FF6B00] bg-orange-50 font-semibold text-[#FF6B00]":"border-gray-300"}`}>{x}</button>)}</div>;
 }
@@ -43,7 +43,7 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
             <G t={cruise?"Departure city":"City"}><Chips o={cities} v={city} s={setCity}/></G>
             <G t="Duration"><Chips o={cruise?["All","3 Nights","4 Nights","7 Nights"]:DUR} v={dur} s={setDur}/></G>
             {cruise?<G t="Type"><Chips o={["All","Standard","Luxury","Ultra Luxury"]} v={cls} s={setCls}/></G>
-              :<G t="Type"><Chips o={["All","Classic Cairo","Coastal","Desert Safari","Sinai","Express Getaway","Southern Circuit"]} v={type} s={setType}/></G>}
+              :<G t="Category"><Chips o={["All","Sea Trips","Cultural Tours","Desert Excursions"]} v={type} s={setType}/></G>}
             {cruise&&<G t="Rating"><Chips o={["Any","8+","9+"]} v={rate===0?"Any":`${rate}+`} s={x=>setRate(x==="Any"?0:parseInt(x))}/></G>}
           </div></aside>
         <section>
