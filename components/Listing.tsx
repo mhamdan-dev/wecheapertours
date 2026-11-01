@@ -5,9 +5,10 @@ import {useSearchParams} from "next/navigation";
 import {TOURS,CRUISES} from "@/data/mockTours";
 import {CITIES} from "@/data/content";
 import {Header,Footer} from "./Chrome";
+import WhatsAppButton from "./WhatsAppButton";
 
-const DUR=["All","Day trip (1 day)","2 days","3+ days"];
-const durOk=(h:number,d:string)=>d==="All"||(d===DUR[1]&&h<=24)||(d===DUR[2]&&h>24&&h<=48)||(d===DUR[3]&&h>48);
+const DUR=["All","Under 4 hours","Half-day (4–6 hours)","Full day (7–24 hours)","2 days","3+ days"];
+const durOk=(h:number,d:string)=>d==="All"||(d===DUR[1]&&h<4)||(d===DUR[2]&&h>=4&&h<=6)||(d===DUR[3]&&h>6&&h<=24)||(d===DUR[4]&&h>24&&h<=48)||(d===DUR[5]&&h>48);
 function Chips({o,v,s}:{o:string[];v:string;s:(x:string)=>void}){
   return <div className="flex flex-wrap gap-2">{o.map(x=><button key={x} onClick={()=>s(x)} className={`rounded-full border px-3 py-1 text-sm ${v===x?"border-[#FF6B00] bg-orange-50 font-semibold text-[#FF6B00]":"border-gray-300"}`}>{x}</button>)}</div>;
 }
@@ -22,7 +23,7 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
   const [sort,setSort]=useState("rec"); const [open,setOpen]=useState(false);
   const list=useMemo(()=>{
     let r=base.filter(t=>t.name.toLowerCase().includes(q.toLowerCase())&&(city==="All"||t.city===city)&&t.price<=max&&t.rating>=rate
-      &&(cruise?(dur==="All"||`${t.nights} Nights`===dur)&&(cls==="All"||t.cls===cls):(type==="All"||t.type===type)&&durOk(t.hours,dur)));
+      &&(cruise?(dur==="All"||`${t.nights} Nights`===dur)&&(cls==="All"||t.cls===cls):(type==="All"||t.type===type||(t.cats||[]).includes(type))&&durOk(t.hours,dur)));
     const s:Record<string,(a:any,b:any)=>number>={rec:(a,b)=>b.reviews-a.reviews,pl:(a,b)=>a.price-b.price,ph:(a,b)=>b.price-a.price,rt:(a,b)=>(b.rating||0)-(a.rating||0)};
     return [...r].sort(s[sort]);
   },[base,q,city,type,dur,cls,max,rate,sort,cruise]);
@@ -43,7 +44,7 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
             <G t={cruise?"Departure city":"City"}><Chips o={cities} v={city} s={setCity}/></G>
             <G t="Duration"><Chips o={cruise?["All","3 Nights","4 Nights","7 Nights"]:DUR} v={dur} s={setDur}/></G>
             {cruise?<G t="Type"><Chips o={["All","Standard","Luxury","Ultra Luxury"]} v={cls} s={setCls}/></G>
-              :<G t="Category"><Chips o={["All","Sea Trips","Cultural Tours","Desert Excursions"]} v={type} s={setType}/></G>}
+              :<G t="Category"><Chips o={["All","Sea Trips","Cultural Tours","Desert Excursions","Desert & Mountains","Desert Safari","Mountains & Monastery","Diving","Private Boats"]} v={type} s={setType}/></G>}
             {cruise&&<G t="Rating"><Chips o={["Any","8+","9+"]} v={rate===0?"Any":`${rate}+`} s={x=>setRate(x==="Any"?0:parseInt(x))}/></G>}
           </div></aside>
         <section className="min-w-0">
@@ -57,7 +58,7 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
               <div className="flex flex-1 flex-col p-4"><h3 className="text-lg font-bold">{t.name}</h3>
                 <p className="text-sm text-gray-600">{cruise?`${t.dep} · ${t.nights} Nights · ${t.cls}`:`${t.city} · ${t.duration} · ${t.type}`}</p>
                 {t.description&&<p className="mt-2 line-clamp-3 text-sm text-gray-700">{t.description}</p>}{t.rating&&<p className="mt-2 flex items-center gap-2 text-sm"><span className="rounded bg-[#0A1931] px-1.5 py-0.5 font-bold text-white">{t.rating}</span>{t.reviews} reviews</p>}
-                <div className="mt-auto flex items-end justify-between pt-4">{t.onRequest?<p className="font-bold text-gray-700">Price on request</p>:<p className="text-sm text-gray-500">from {t.originalPrice&&<s className="mr-1">${t.originalPrice}</s>}<b className="text-2xl text-black">${t.price}</b></p>}
-                  <Link href={`/tours/${t.id}`} className="rounded bg-[#FF6B00] px-5 py-2 font-bold text-white hover:bg-orange-600">View Deal</Link></div></div></article>)}</div>
+                <div className="mt-auto flex items-end justify-between pt-4">{t.onRequest?<p className="font-bold text-gray-700">Price on request</p>:<p className="text-sm text-gray-500">from {t.originalPrice&&<s className="mr-1">${t.originalPrice}</s>}<b className="text-2xl text-black">{t.currency||"$"}{t.price}</b></p>}
+                  <div className="flex flex-wrap justify-end gap-2">{t.onRequest&&<WhatsAppButton message={`Hi, I need help with ${t.name}. From WeCheaperTours site.`} label="Ask on WhatsApp" className="rounded bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"/>}<Link href={`/tours/${t.id}`} className="rounded bg-[#FF6B00] px-5 py-2 font-bold text-white hover:bg-orange-600">View Deal</Link></div></div></div></article>)}</div>
         </section></div></main><Footer/></>;
 }

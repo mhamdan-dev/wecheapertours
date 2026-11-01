@@ -3,7 +3,7 @@ import {useMemo,useState} from "react";
 import {wa} from "@/lib/wa";
 import {BROWSE,CITIES,EXPLORE,TRENDING,img} from "@/data/content";
 import {TOURS} from "@/data/mockTours";
-const TYPES=["All","Sea Trips","Cultural Tours","Desert Excursions"];
+const TYPES=["All","Sea Trips","Cultural Tours","Desert Excursions","Desert & Mountains","Desert Safari","Mountains & Monastery","Diving","Private Boats"];
 
 function Img({s,className=""}:{s:string;className?:string}){
   const [bad,setBad]=useState(false);
@@ -27,7 +27,7 @@ export default function Home(){
   const [city,setCity]=useState("All");
   const [svc,setSvc]=useState("All");
   const [dest,setDest]=useState("");
-  const list=useMemo(()=>TOURS.filter(t=>(city==="All"||t.city===city)&&(svc==="All"||t.type===svc)),[city,svc]);
+  const list=useMemo(()=>TOURS.filter(t=>(city==="All"||t.city===city)&&(svc==="All"||t.type===svc||((t as any).cats||[]).includes(svc))),[city,svc]);
   const go=()=>{window.location.href=dest?`/tours?city=${encodeURIComponent(dest)}`:"/tours"};
   const pill=(on:boolean)=>`whitespace-nowrap rounded-full border px-4 py-1.5 text-sm ${on?"border-orange-500 bg-orange-50 font-semibold text-orange-600":"border-gray-300"}`;
   return(<main>
@@ -87,7 +87,7 @@ export default function Home(){
           <a href={`/tours/${t.id}`}><img src={t.image} alt={t.name} loading="lazy" className="h-40 w-full bg-gray-200 object-cover"/></a>
           <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-orange-500"><a href={`/tours/${t.id}`}>{t.name}</a></h3><p className="text-sm text-gray-600">{t.city} · {t.duration}</p>
             <p className="mt-2 text-sm text-gray-600">{t.type}</p>
-            <p className="mt-2 text-right font-bold text-gray-700">{t.onRequest?"Price on request":<>from ${t.price}</>}</p>
+            <p className="mt-2 text-right font-bold text-gray-700">{t.onRequest?"Price on request":<>from {(t as any).currency||"$"}{t.price}</>}</p>
             <a href={wa(`Hi, I need help with ${t.name} on [date]. From WeCheaperTours site.`)} target="_blank" rel="noreferrer" className="mt-2 block w-full rounded bg-[#FF6B00] py-2 text-center text-sm font-bold text-white hover:bg-orange-600">Check availability</a></div></article>)}
         {!list.length&&<p className="col-span-full py-8 text-center text-gray-500">No tours match this combination – try another city or service.</p>}</div>
     </section>
