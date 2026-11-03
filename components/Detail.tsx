@@ -5,22 +5,27 @@ import {wa} from "@/lib/wa";
 import {Header,Footer} from "./Chrome";
 import WhatsAppButton from "./WhatsAppButton";
 export default function Detail({t}:{t:any}){
-  const TABS=["Overview","Itinerary","Included / Excluded","Map","Reviews",...(t.practical?["Practical Guide"]:[])];
+  const TABS=["Overview",...(t.noItinerary?[]:["Itinerary"]),"Included / Excluded","Map","Reviews",...(t.practical?["Practical Guide"]:[])];
   const [tab,setTab]=useState(TABS[0]); const [date,setDate]=useState(""); const [main,setMain]=useState(0);
   const pics=[t.image,...[1,2,3].map(i=>POOL[(t.id+i*5)%POOL.length])];
   const cruise=t.type==="Cruise";
   return <><Header/>
   <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 md:overflow-visible md:px-6">
     <h1 className="max-w-full break-words text-2xl font-bold md:text-3xl">{t.name}</h1>
-    <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-600">{t.rating&&<><span className="rounded bg-[#0A1931] px-1.5 py-0.5 font-bold text-white">{t.rating}</span>{t.reviews} reviews · </>}{t.city} · {t.duration}</p>
+    <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-600">{t.rating&&<><span className="rounded bg-[#0A1931] px-1.5 py-0.5 font-bold text-white">{t.rating}</span>{t.reviews} reviews · </>}Departure: {t.departureCity||t.city} · {t.duration}</p>
     <ol className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">{["Select tour","Check availability","WhatsApp inquiry","Confirm"].map((s,i)=><li key={s} className="flex items-center gap-2 rounded-lg border p-2"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FF6B00] text-xs font-bold text-white">{i+1}</span>{s}</li>)}</ol>
     <div className="mt-4 grid w-full max-w-full grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]"><div className="min-w-0 max-w-full">{t.reminder&&<div className="mb-4 box-border w-full max-w-full rounded-lg border-l-4 border-yellow-400 bg-yellow-50 p-3 text-sm">⚠️ <b>Important reminder:</b> {t.reminder}</div>}{t.warning&&<div className="mb-4 box-border w-full max-w-full rounded-lg border-l-4 border-orange-500 bg-orange-50 p-3 text-sm">⚠️ {t.warning}</div>}
       <div className="w-full max-w-full overflow-hidden rounded-lg"><img src={pics[main]} alt="" className="block h-[280px] w-full max-w-full bg-gray-200 object-cover md:h-[400px]"/></div>
       <div className="mt-2 grid grid-cols-4 gap-2">{pics.map((p,i)=><button key={i} onClick={()=>setMain(i)} className={`overflow-hidden rounded-md border-2 ${main===i?"border-[#FF6B00]":"border-transparent"}`}><img src={p} alt="" className="h-16 w-full bg-gray-200 object-cover md:h-20"/></button>)}</div>
       <div className="noscroll mt-6 flex gap-1 overflow-x-auto border-b">{TABS.map(x=><button key={x} onClick={()=>setTab(x)} className={`whitespace-nowrap px-4 py-2 font-semibold ${tab===x?"border-b-2 border-[#FF6B00] text-[#FF6B00]":"text-gray-600"}`}>{x}</button>)}</div>
       <div className="py-5 text-gray-800">
+        {tab==="Overview"&&t.prominent&&<div className="mb-4 grid grid-cols-2 gap-3">{t.prominent.map(([a,b]:string[])=><div key={a} className="rounded-lg bg-orange-50 p-4 text-center"><p className="text-xs uppercase text-gray-600">{a}</p><p className="text-xl font-bold text-[#FF6B00]">{b}</p></div>)}</div>}
+        {tab==="Overview"&&t.quick&&<div className="mb-4 grid grid-cols-1 gap-2 rounded-lg border bg-gray-50 p-3 text-sm sm:grid-cols-2">{t.quick.map(([a,b]:string[])=><div key={a}><b>{a}:</b> {b}</div>)}</div>}
         {tab==="Overview"&&t.meta&&<ul className="mb-4 space-y-1 rounded-lg bg-gray-50 p-3 text-sm">{t.meta.map(([a,b]:string[])=><li key={a}><b>{a}:</b> {b}</li>)}</ul>}
         {tab==="Overview"&&<p>{t.description||<>Join <b>{t.name}</b> with a friendly local team. Message us on WhatsApp for full details and pick-up times.</>}</p>}
+        {tab==="Overview"&&t.scenery&&<div className="mt-4"><p className="mb-2 font-bold">Choose your scenery</p><div className="grid grid-cols-1 gap-3 sm:grid-cols-2">{t.scenery.map(([i,h,x]:string[])=><div key={h} className="rounded-lg border p-3"><div className="text-3xl">{i}</div><b>{h}</b><p className="text-sm text-gray-700">{x}</p></div>)}</div></div>}
+        {tab==="Overview"&&t.checklist&&<div className="mt-4"><p className="mb-2 font-bold">Programme details</p><ul className="space-y-2">{t.checklist.map(([i,x]:string[])=><li key={x} className="flex gap-2"><span>{i}</span><span>{x}</span></li>)}</ul></div>}
+        {tab==="Overview"&&t.pricing&&<div className="mt-4 overflow-x-auto"><p className="mb-1 font-bold">Pricing per person</p><table className="w-full min-w-[320px] text-left text-sm"><thead className="bg-gray-50"><tr>{t.pricing.head.map((h:string)=><th key={h} className="p-2">{h}</th>)}</tr></thead><tbody>{t.pricing.rows.map((r:string[])=><tr key={r[0]} className="border-t">{r.map((c,i)=><td key={i} className={`p-2 ${i===0?"font-semibold":""}`}>{c}</td>)}</tr>)}</tbody></table></div>}
         {tab==="Overview"&&t.guideTip&&<div className="mt-4 rounded-lg border-l-4 border-green-500 bg-green-50 p-3 text-sm">💡 <b>Guide's tip:</b> {t.guideTip}</div>}
         {tab==="Overview"&&t.compare&&<div className="mt-4 overflow-x-auto"><p className="mb-1 font-bold">Quad vs Buggy</p><table className="w-full min-w-[420px] text-left text-sm"><thead className="bg-gray-50"><tr><th className="p-2"></th><th className="p-2">Quad ATV</th><th className="p-2">Buggy</th></tr></thead><tbody>{t.compare.map(([a,b,c]:string[])=><tr key={a} className="border-t align-top"><td className="p-2 font-semibold">{a}</td><td className="p-2">{b}</td><td className="p-2">{c}</td></tr>)}</tbody></table></div>}
         {tab==="Itinerary"&&t.itinerary&&<ol className="space-y-3">{t.itinerary.map(([a,b]:string[])=>b?<li key={a}><b>{a}:</b> {b}</li>:<li key={a} className="mt-3 text-lg font-bold text-[#FF6B00]">{a}</li>)}</ol>}

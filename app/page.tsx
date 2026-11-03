@@ -3,7 +3,8 @@ import {useMemo,useState} from "react";
 import {wa} from "@/lib/wa";
 import {BROWSE,CITIES,EXPLORE,TRENDING,img} from "@/data/content";
 import {TOURS} from "@/data/mockTours";
-const TYPES=["All","Sea Trips","Cultural Tours","Desert Excursions","Desert & Mountains","Desert Safari","Mountains & Monastery","Diving","Private Boats"];
+const DEPS:string[]=Array.from(new Set(TOURS.map(t=>(t as any).departureCity)));
+const TYPES=["All","Nautical Excursions & Cruises","Nautical - Hurghada","Cultural Tours","Desert Safari","Deep Safari & Trekking","Mount Moses and St. Catherine's Monastery","Quad ATV Tours","Horse Riding","Wellness & Spa","City Tours","Jordan Excursions","Luxor Excursions"];
 
 function Img({s,className=""}:{s:string;className?:string}){
   const [bad,setBad]=useState(false);
@@ -21,13 +22,13 @@ function DateField({ph}:{ph:string}){
     onFocus={e=>{setD(true);const el=e.target as HTMLInputElement;setTimeout(()=>{try{el.showPicker?.()}catch{}},50)}} onBlur={()=>{if(!v)setD(false)}} className={fld}/></div>;
 }
 const slug=(c:string)=>({"Cairo":"cairo","Hurghada":"hurghada","Sharm El Sheikh":"sharm","Marsa Alam":"marsa-alam","Luxor":"luxor","Aswan":"aswan","Alexandria":"alexandria","Siwa":"siwa","Fayoum":"fayoum","Sinai":"sinai","White Desert":"white-desert","Sharm El-Sheikh":"sharm"} as Record<string,string>)[c]||"cairo";
-const count=(city:string)=>TOURS.filter(t=>t.city===city).length;
+const count=(city:string)=>TOURS.filter(t=>(t as any).departureCity===city).length;
 
 export default function Home(){
   const [city,setCity]=useState("All");
   const [svc,setSvc]=useState("All");
   const [dest,setDest]=useState("");
-  const list=useMemo(()=>TOURS.filter(t=>(city==="All"||t.city===city)&&(svc==="All"||t.type===svc||((t as any).cats||[]).includes(svc))),[city,svc]);
+  const list=useMemo(()=>TOURS.filter(t=>(city==="All"||(t as any).departureCity===city)&&(svc==="All"||t.type===svc||((t as any).cats||[]).includes(svc))),[city,svc]);
   const go=()=>{window.location.href=dest?`/tours?city=${encodeURIComponent(dest)}`:"/tours"};
   const pill=(on:boolean)=>`whitespace-nowrap rounded-full border px-4 py-1.5 text-sm ${on?"border-orange-500 bg-orange-50 font-semibold text-orange-600":"border-gray-300"}`;
   return(<main>
@@ -36,7 +37,7 @@ export default function Home(){
     <header className="bg-white shadow">
       <div className="mx-auto flex max-w-6xl flex-col items-start gap-2 px-4 py-3 md:flex-row md:items-center md:justify-between">
         <div className="flex shrink-0 items-center gap-2"><img src="/logo-emblem.png" alt="WeCheaperTours.com" className="h-8 w-8 shrink-0 md:h-11 md:w-11"/><span className="whitespace-nowrap text-lg font-bold"><span className="text-[#FF6B00]">WeCheaper</span> <span className="text-[#1a1a1a]">Tours</span></span></div>
-        <nav className="noscroll -mx-1 flex w-full gap-1 overflow-x-auto text-sm text-[#1a1a1a] md:mx-0 md:w-auto">{[["Tours","/tours"],["Nile Cruises","/nile-cruises"],["Diving","/diving"],["Rentals","/apartments"],["Support",wa("Hi, I need help")]].map(([m,h],i)=><a key={m} href={h} className={`whitespace-nowrap rounded-full px-3 py-2 ${i==0?"bg-orange-50 font-semibold text-orange-600":"hover:bg-gray-100"}`}>{m}</a>)}</nav>
+        <nav className="noscroll -mx-1 flex w-full gap-1 overflow-x-auto text-sm text-[#1a1a1a] md:mx-0 md:w-auto">{[["Tours","/tours"],["Nile Cruises","/nile-cruises"],["Hurghada","/hurghada"],["Diving","/diving"],["Rentals","/apartments"],["Support",wa("Hi, I need help")]].map(([m,h],i)=><a key={m} href={h} className={`whitespace-nowrap rounded-full px-3 py-2 ${i==0?"bg-orange-50 font-semibold text-orange-600":"hover:bg-gray-100"}`}>{m}</a>)}</nav>
       </div>
     </header>
     <div className="bg-bk text-white">
@@ -48,7 +49,7 @@ export default function Home(){
     </>
     <section className="mx-auto -mt-9 max-w-6xl px-4">
       <div className="grid grid-cols-2 gap-2 rounded-xl border-2 border-yellow-400 bg-white p-3 shadow-2xl md:grid-cols-[2fr_1fr_1fr_1.3fr_auto] md:gap-1 md:border-4 md:bg-yellow-400 md:p-0">
-        <div className="relative col-span-2 md:col-span-1"><Pin/><select value={dest} onChange={e=>setDest(e.target.value)} className={`${fld} ${dest?"":"text-gray-500"}`}><option value="">Where are you going?</option>{CITIES.map(c=><option key={c}>{c}</option>)}</select></div>
+        <div className="relative col-span-2 md:col-span-1"><Pin/><select value={dest} onChange={e=>setDest(e.target.value)} className={`${fld} ${dest?"":"text-gray-500"}`}><option value="">Departing from?</option>{DEPS.map(c=><option key={c}>{c}</option>)}</select></div>
         <DateField ph="Check-in date"/>
         <DateField ph="Check-out date"/>
         <div className="relative col-span-2 md:col-span-1"><Usr/><select className={fld}><option>2 adults · 0 children · 1 tour</option><option>1 adult · 0 children · 1 tour</option><option>4 adults · 2 children · 1 tour</option></select></div>
@@ -62,14 +63,14 @@ export default function Home(){
           <a href="/tours" className="mt-3 inline-block rounded bg-[#FF6B00] px-3 py-2 text-sm font-bold text-white hover:bg-orange-600">Search deals</a></div>
         <Img s="offer" className="h-24 w-24 shrink-0 rounded-lg"/></div>
 
-      <h2 className="mt-10 text-2xl font-bold">Browse by city</h2>
+      <h2 className="mt-10 text-2xl font-bold">Browse by departure city</h2>
       <div className="noscroll mt-3 flex gap-4 overflow-x-auto">{BROWSE.filter(b=>count(b.city)>0).map(b=>
         <a key={b.slug} href={`/tours?city=${encodeURIComponent(b.city)}`} className="w-60 shrink-0 text-left">
-          <Img s={b.slug} className="h-40 w-full rounded-lg"/><h3 className="mt-2 font-bold">{b.name}</h3><p className="text-sm text-gray-600">{b.sub}</p><p className="text-sm">{count(b.city)} {count(b.city)===1?"tour":"tours"}</p></a>)}</div>
+          <Img s={b.slug} className="h-40 w-full rounded-lg"/><h3 className="mt-2 font-bold">{b.name}</h3><p className="text-sm text-gray-600">Tours departing from {b.city}</p><p className="text-sm">{count(b.city)} {count(b.city)===1?"tour":"tours"} departing</p></a>)}</div>
 
-      <h2 className="mt-10 text-2xl font-bold">Trending destinations</h2><p className="text-gray-600">Most popular choices for travelers from Egypt</p>
+      <h2 className="mt-10 text-2xl font-bold">Popular departure cities</h2><p className="text-gray-600">Most popular choices for travelers from Egypt</p>
       <div className="mt-3 grid grid-cols-2 gap-4 md:grid-cols-6">{TRENDING.map((c,i)=>
-        <button key={c} onClick={()=>{setCity(c);document.getElementById("tours")?.scrollIntoView({behavior:"smooth"})}} className={`relative h-44 overflow-hidden rounded-lg text-left ${i<2?"md:col-span-3":"md:col-span-2"}`}>
+        <button key={c} onClick={()=>{setCity(c);document.getElementById("tours")?.scrollIntoView({behavior:"smooth"})}} className={`relative h-44 overflow-hidden rounded-lg text-left ${"md:col-span-2"}`}>
           <Img s={slug(c)} className="absolute inset-0 h-full w-full"/><div className="absolute inset-0 bg-black/20"/>
           <span className="absolute left-3 top-3 text-xl font-bold text-white">{c} 🇪🇬</span></button>)}</div>
 
@@ -80,12 +81,12 @@ export default function Home(){
           <div className="p-3"><h3 className="font-bold">{e.t}</h3><p className="text-sm text-gray-600">{e.s}</p></div></a>)}</div>
 
       <h2 id="tours" className="mt-10 scroll-mt-4 text-2xl font-bold">Popular tours</h2><p className="text-gray-600">Pick a city and a service to filter</p>
-      <div className="noscroll mt-3 flex gap-2 overflow-x-auto">{["All",...CITIES].map(c=><button key={c} onClick={()=>setCity(c)} className={pill(city===c)}>{c}</button>)}</div>
+      <div className="noscroll mt-3 flex gap-2 overflow-x-auto">{["All",...DEPS].map(c=><button key={c} onClick={()=>setCity(c)} className={pill(city===c)}>{c}</button>)}</div>
       <div className="noscroll mt-2 flex gap-2 overflow-x-auto">{TYPES.map(s=><button key={s} onClick={()=>setSvc(s)} className={pill(svc===s)}>{s}</button>)}</div>
       <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">{list.slice(0,12).map(t=>
         <article key={t.id} className="overflow-hidden rounded-lg border bg-white">
           <a href={`/tours/${t.id}`}><img src={t.image} alt={t.name} loading="lazy" className="h-40 w-full bg-gray-200 object-cover"/></a>
-          <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-orange-500"><a href={`/tours/${t.id}`}>{t.name}</a></h3><p className="text-sm text-gray-600">{t.city} · {t.duration}</p>
+          <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-orange-500"><a href={`/tours/${t.id}`}>{t.name}</a></h3><p className="text-sm text-gray-600">Departs {(t as any).departureCity} · {t.duration}</p>
             <p className="mt-2 text-sm text-gray-600">{t.type}</p>
             <p className="mt-2 text-right font-bold text-gray-700">{t.onRequest?"Price on request":<>from {(t as any).currency||"$"}{t.price}</>}</p>
             <a href={wa(`Hi, I need help with ${t.name} on [date]. From WeCheaperTours site.`)} target="_blank" rel="noreferrer" className="mt-2 block w-full rounded bg-[#FF6B00] py-2 text-center text-sm font-bold text-white hover:bg-orange-600">Check availability</a></div></article>)}

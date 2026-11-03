@@ -22,14 +22,15 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
   const [cls,setCls]=useState("All"); const [max,setMax]=useState(800); const [rate,setRate]=useState(0);
   const [sort,setSort]=useState("rec"); const [open,setOpen]=useState(false);
   const list=useMemo(()=>{
-    let r=base.filter(t=>t.name.toLowerCase().includes(q.toLowerCase())&&(city==="All"||t.city===city)&&t.price<=max&&t.rating>=rate
+    let r=base.filter(t=>t.name.toLowerCase().includes(q.toLowerCase())&&(city==="All"||t.departureCity===city)&&t.price<=max&&t.rating>=rate
       &&(cruise?(dur==="All"||`${t.nights} Nights`===dur)&&(cls==="All"||t.cls===cls):(type==="All"||t.type===type||(t.cats||[]).includes(type))&&durOk(t.hours,dur)));
     const s:Record<string,(a:any,b:any)=>number>={rec:(a,b)=>b.reviews-a.reviews,pl:(a,b)=>a.price-b.price,ph:(a,b)=>b.price-a.price,rt:(a,b)=>(b.rating||0)-(a.rating||0)};
     return [...r].sort(s[sort]);
   },[base,q,city,type,dur,cls,max,rate,sort,cruise]);
-  const reset=()=>{setQ("");setCity("All");setType(preType||"All");setDur("All");setCls("All");setMax(800);setRate(0)};
-  const shown=list.length?list:base.slice(0,4);
-  const cities=cruise?["All","Luxor","Aswan","Cairo"]:["All",...CITIES];
+  const reset=()=>{setLim(20);setQ("");setCity("All");setType(preType||"All");setDur("All");setCls("All");setMax(800);setRate(0)};
+  const [lim,setLim]=useState(20);
+  const shown=list.length?list.slice(0,lim):base.slice(0,4);
+  const cities=["All",...Array.from(new Set(base.map((t:any)=>t.departureCity)))] as string[];
   return <>
     <Header/>
     <main className="mx-auto max-w-6xl px-4 py-6">
@@ -41,10 +42,10 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
           <div className="rounded-lg border p-4">
             <div className="flex items-center justify-between"><h2 className="text-lg font-bold">Filter by</h2><button onClick={reset} className="text-sm text-[#FF6B00]">Reset</button></div>
             {cruise&&<G t={`Price: up to $${max}`}><input type="range" min={0} max={800} step={10} value={max} onChange={e=>setMax(+e.target.value)} className="w-full accent-[#FF6B00]"/></G>}
-            <G t={cruise?"Departure city":"City"}><Chips o={cities} v={city} s={setCity}/></G>
+            <G t="Departure city"><Chips o={cities} v={city} s={setCity}/></G>
             <G t="Duration"><Chips o={cruise?["All","3 Nights","4 Nights","7 Nights"]:DUR} v={dur} s={setDur}/></G>
             {cruise?<G t="Type"><Chips o={["All","Standard","Luxury","Ultra Luxury"]} v={cls} s={setCls}/></G>
-              :<G t="Category"><Chips o={["All","Sea Trips","Cultural Tours","Desert Excursions","Desert & Mountains","Desert Safari","Mountains & Monastery","Diving","Private Boats"]} v={type} s={setType}/></G>}
+              :<G t="Category"><Chips o={["All","Nautical Excursions & Cruises","Nautical - Hurghada","Cultural Tours","Desert Safari","Deep Safari & Trekking","Mount Moses and St. Catherine's Monastery","Quad ATV Tours","Horse Riding","Wellness & Spa","City Tours","Jordan Excursions","Luxor Excursions"]} v={type} s={setType}/></G>}
             {cruise&&<G t="Rating"><Chips o={["Any","8+","9+"]} v={rate===0?"Any":`${rate}+`} s={x=>setRate(x==="Any"?0:parseInt(x))}/></G>}
           </div></aside>
         <section className="min-w-0">
@@ -56,9 +57,10 @@ export default function Listing({mode,title,preType}:{mode:"tour"|"cruise";title
               <div className="relative shrink-0 sm:w-64"><img src={t.image} alt={t.name} loading="lazy" className="h-48 w-full bg-gray-200 object-cover sm:h-full"/>
                 {t.badge&&<span className="absolute left-2 top-2 rounded bg-[#FF6B00] px-2 py-1 text-xs font-bold text-white">{t.badge}</span>}</div>
               <div className="flex flex-1 flex-col p-4"><h3 className="text-lg font-bold">{t.name}</h3>
-                <p className="text-sm text-gray-600">{cruise?`${t.dep} · ${t.nights} Nights · ${t.cls}`:`${t.city} · ${t.duration} · ${t.type}`}</p>
+                <p className="text-sm text-gray-600">{cruise?`${t.dep} · ${t.nights} Nights · ${t.cls}`:`${t.departureCity===t.city?t.city:`${t.departureCity} → ${t.city}`} · ${t.duration} · ${t.type}`}</p>
                 {t.description&&<p className="mt-2 line-clamp-3 text-sm text-gray-700">{t.description}</p>}{t.rating&&<p className="mt-2 flex items-center gap-2 text-sm"><span className="rounded bg-[#0A1931] px-1.5 py-0.5 font-bold text-white">{t.rating}</span>{t.reviews} reviews</p>}
                 <div className="mt-auto flex items-end justify-between pt-4">{t.onRequest?<p className="font-bold text-gray-700">Price on request</p>:<p className="text-sm text-gray-500">from {t.originalPrice&&<s className="mr-1">${t.originalPrice}</s>}<b className="text-2xl text-black">{t.currency||"$"}{t.price}</b></p>}
                   <div className="flex flex-wrap justify-end gap-2">{t.onRequest&&<WhatsAppButton message={`Hi, I need help with ${t.name}. From WeCheaperTours site.`} label="Ask on WhatsApp" className="rounded bg-green-600 px-4 py-2 font-bold text-white hover:bg-green-700"/>}<Link href={`/tours/${t.id}`} className="rounded bg-[#FF6B00] px-5 py-2 font-bold text-white hover:bg-orange-600">View Deal</Link></div></div></div></article>)}</div>
+          {list.length>lim&&<button onClick={()=>setLim(lim+20)} className="mt-4 w-full rounded-lg border-2 border-[#FF6B00] py-3 font-bold text-[#FF6B00] hover:bg-orange-50">Show more ({list.length-lim} remaining)</button>}
         </section></div></main><Footer/></>;
 }
