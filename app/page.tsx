@@ -1,7 +1,8 @@
 "use client";
 import {useMemo,useState} from "react";
 import {wa} from "@/lib/wa";
-import TourCard from "@/components/TourCard";
+import HomeTourCard from "@/components/HomeTourCard";
+import EnquiryModal from "@/components/EnquiryModal";
 import {BROWSE,CITIES,EXPLORE,TRENDING,img} from "@/data/content";
 import {TOURS} from "@/data/mockTours";
 const DEPS:string[]=Array.from(new Set(TOURS.map(t=>(t as any).departureCity)));
@@ -29,6 +30,7 @@ export default function Home(){
   const [city,setCity]=useState("All");
   const [svc,setSvc]=useState("All");
   const [dest,setDest]=useState("");
+  const [enquiryTour,setEnquiryTour]=useState<any>(null);
   const availT=new Set<string>(TOURS.filter(t=>city==="All"||(t as any).departureCity===city).flatMap(t=>[t.type,...(((t as any).cats)||[])]));
   const typeChips=["All",...TYPES.filter(c=>c!=="All"&&availT.has(c))];
   const list=useMemo(()=>TOURS.filter(t=>(city==="All"||(t as any).departureCity===city)&&(svc==="All"||t.type===svc||((t as any).cats||[]).includes(svc))),[city,svc]);
@@ -67,9 +69,15 @@ export default function Home(){
         <Img s="offer" className="h-24 w-24 shrink-0 rounded-lg"/></div>
 
       <h2 className="mt-10 text-2xl font-bold">Browse by departure city</h2>
-      <div className="noscroll mt-3 flex gap-4 overflow-x-auto">{BROWSE.filter(b=>count(b.city)>0).map(b=>
-        <a key={b.slug} href={`/tours?city=${encodeURIComponent(b.city)}`} className="w-60 shrink-0 text-left">
-          <Img s={b.slug} className="aspect-[16/9] w-full rounded-xl"/><h3 className="mt-2 font-bold">{b.name}</h3><p className="text-sm text-gray-600">Tours departing from {b.city}</p><p className="text-sm">{count(b.city)} {count(b.city)===1?"tour":"tours"} departing</p></a>)}</div>
+      <div className="mt-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">{BROWSE.filter(b=>count(b.city)>0).map(b=>
+        <article key={b.slug} className="flex h-full min-w-0 flex-col overflow-hidden rounded-2xl bg-white shadow-md">
+          <a href={`/tours?city=${encodeURIComponent(b.city)}`} className="tour-card-image relative block w-full shrink-0 overflow-hidden bg-gray-200">
+            <Img s={b.slug} className="h-full w-full"/>
+            <span className="absolute left-3 top-3 inline-flex max-w-[75%] items-center gap-1 rounded-full bg-black/85 px-3 py-1 text-xs font-medium text-white"><svg className="h-3.5 w-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/></svg><span className="truncate">{b.name}</span></span>
+            <span className="absolute bottom-3 right-3 rounded-full bg-[#FF6B00] px-3 py-1 text-xs font-semibold text-white shadow">{count(b.city)} {count(b.city)===1?"Tour":"Tours"}</span>
+          </a>
+          <div className="flex flex-1 flex-col p-4"><h3 className="line-clamp-2 min-h-[2.9rem] text-lg font-bold leading-snug">{b.name}</h3><p className="mt-2 line-clamp-2 min-h-[2.6rem] text-sm text-gray-600">{b.sub}</p>
+            <div className="mt-auto pt-4"><a href={`/tours?city=${encodeURIComponent(b.city)}`} className="btn-secondary block w-full text-sm">View tours departing from {b.city}</a></div></div></article>)}</div>
 
       <h2 className="mt-10 text-2xl font-bold">Popular departure cities</h2><p className="text-gray-600">Most popular choices for travelers from Egypt</p>
       <div className="mt-3 grid grid-cols-2 gap-6 md:grid-cols-6">{TRENDING.map((c,i)=>
@@ -83,11 +91,12 @@ export default function Home(){
           <div className="relative"><Img s={e.slug} className="aspect-[16/9] w-full"/>{e.st&&<span className={`absolute left-2 top-2 rounded px-2 py-1 text-xs font-semibold text-white ${e.st.startsWith("Under")?"bg-orange-600":"bg-red-700"}`}>{e.st}</span>}</div>
           <div className="p-3"><h3 className="font-bold">{e.t}</h3><p className="text-sm text-gray-600">{e.s}</p></div></a>)}</div>
 
-      <h2 id="tours" className="mt-10 scroll-mt-4 text-2xl font-bold">Popular tours</h2><p className="text-gray-600">Pick a city and a service to filter</p>
+      <h2 id="tours" className="mt-10 scroll-mt-4 text-2xl font-bold">Popular Day Excursions</h2><p className="text-gray-600">Pick a departure city and a category to filter</p>
       <div className="noscroll mt-3 flex gap-2 overflow-x-auto">{["All",...DEPS].map(c=><button key={c} onClick={()=>{setCity(c);setSvc("All")}} className={pill(city===c)}>{c}</button>)}</div>
       <div className="noscroll mt-2 flex gap-2 overflow-x-auto">{typeChips.map(s=><button key={s} onClick={()=>setSvc(s)} className={pill(svc===s)}>{s}</button>)}</div>
-      <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">{list.slice(0,12).map(t=><TourCard key={t.id} t={t as any}/>)}
+      <div className="mt-4 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">{list.slice(0,6).map(t=><HomeTourCard key={t.id} t={t as any} onEnquire={setEnquiryTour}/>)}
         {!list.length&&<p className="col-span-full py-8 text-center text-gray-500">No tours match this combination – try another city or service.</p>}</div>
+      <div className="mt-8 text-center"><a href="/tours" className="btn-secondary">Browse All Excursions</a></div>
     </section>
     <footer className="mt-16 bg-bk py-10 text-sm text-white">
       <div className="mx-auto mb-6 max-w-7xl px-4"><div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="" className="h-12 w-12"/><span className="text-lg font-bold"><span className="text-[#FF6B00]">WeCheaper</span> Tours</span></div></div>
@@ -95,5 +104,6 @@ export default function Home(){
         {[["Support",["Manage your trips","Contact Customer Service","Safety resource centre"]],["Discover",["Tours","Nile Cruises","Car rentals","Vacation rentals"]],["Terms and settings",["Privacy & cookies","Terms of Service","Accessibility"]],["About",["About WeCheaperTours","How we work","Careers","Contact"]]].map(([h,l])=>
         <div key={h as string}><h4 className="mb-2 font-bold">{h as string}</h4>{(l as string[]).map(x=><p key={x} className="py-0.5 text-gray-200">{x}</p>)}</div>)}</div>
       <p className="mt-8 text-center text-gray-300">© WeCheaperTours.com – Discover Jordan &amp; Egypt</p></footer>
+  <EnquiryModal tour={enquiryTour} onClose={()=>setEnquiryTour(null)}/>
   </main>);
 }
