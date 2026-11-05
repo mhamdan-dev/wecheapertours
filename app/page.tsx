@@ -1,10 +1,11 @@
 "use client";
 import {useMemo,useState} from "react";
 import {wa} from "@/lib/wa";
+import TourCard from "@/components/TourCard";
 import {BROWSE,CITIES,EXPLORE,TRENDING,img} from "@/data/content";
 import {TOURS} from "@/data/mockTours";
 const DEPS:string[]=Array.from(new Set(TOURS.map(t=>(t as any).departureCity)));
-const TYPES=["All","Nautical Excursions & Cruises","Nautical - Hurghada","Cultural Tours","Desert Safari","Deep Safari & Trekking","Mount Moses and St. Catherine's Monastery","Quad ATV Tours","Horse Riding","Wellness & Spa","City Tours","Jordan Excursions","Luxor Excursions"];
+const TYPES=["All","Nautical - Sharm","Nautical - Hurghada","Cultural Tours","Desert Safari","Deep Safari & Trekking","Mount Moses and St. Catherine's Monastery","Quad ATV Tours","Horse Riding","Wellness & Spa","City Tours","Jordan Excursions","Luxor Excursions"];
 
 function Img({s,className=""}:{s:string;className?:string}){
   const [bad,setBad]=useState(false);
@@ -28,26 +29,28 @@ export default function Home(){
   const [city,setCity]=useState("All");
   const [svc,setSvc]=useState("All");
   const [dest,setDest]=useState("");
+  const availT=new Set<string>(TOURS.filter(t=>city==="All"||(t as any).departureCity===city).flatMap(t=>[t.type,...(((t as any).cats)||[])]));
+  const typeChips=["All",...TYPES.filter(c=>c!=="All"&&availT.has(c))];
   const list=useMemo(()=>TOURS.filter(t=>(city==="All"||(t as any).departureCity===city)&&(svc==="All"||t.type===svc||((t as any).cats||[]).includes(svc))),[city,svc]);
   const go=()=>{window.location.href=dest?`/tours?city=${encodeURIComponent(dest)}`:"/tours"};
   const pill=(on:boolean)=>`whitespace-nowrap rounded-full border px-4 py-1.5 text-sm ${on?"border-orange-500 bg-orange-50 font-semibold text-orange-600":"border-gray-300"}`;
   return(<main>
     <>
-    <div className="bg-[#f5f5f5] text-xs text-gray-700"><div className="mx-auto flex max-w-6xl justify-between px-4 py-1.5"><span>Discover Jordan &amp; Egypt</span><span>www.wecheapertours.com</span></div></div>
+    <div className="bg-[#f5f5f5] text-xs text-gray-700"><div className="mx-auto flex max-w-7xl justify-between px-4 py-1.5"><span>Discover Jordan &amp; Egypt</span><span>www.wecheapertours.com</span></div></div>
     <header className="bg-white shadow">
-      <div className="mx-auto flex max-w-6xl flex-col items-start gap-2 px-4 py-3 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex max-w-7xl flex-col items-start gap-2 px-4 py-3 md:flex-row md:items-center md:justify-between">
         <div className="flex shrink-0 items-center gap-2"><img src="/logo-emblem.png" alt="WeCheaperTours.com" className="h-8 w-8 shrink-0 md:h-11 md:w-11"/><span className="whitespace-nowrap text-lg font-bold"><span className="text-[#FF6B00]">WeCheaper</span> <span className="text-[#1a1a1a]">Tours</span></span></div>
         <nav className="noscroll -mx-1 flex w-full gap-1 overflow-x-auto text-sm text-[#1a1a1a] md:mx-0 md:w-auto">{[["Tours","/tours"],["Nile Cruises","/nile-cruises"],["Hurghada","/hurghada"],["Diving","/diving"],["Rentals","/apartments"],["Support",wa("Hi, I need help")]].map(([m,h],i)=><a key={m} href={h} className={`whitespace-nowrap rounded-full px-3 py-2 ${i==0?"bg-orange-50 font-semibold text-orange-600":"hover:bg-gray-100"}`}>{m}</a>)}</nav>
       </div>
     </header>
     <div className="bg-bk text-white">
-      <div className="mx-auto max-w-6xl px-4 pb-24 pt-10 md:pb-28">
-        <h1 className="text-3xl font-bold md:text-5xl">Find your next <span className="text-yellow-400">Egypt adventure</span></h1>
+      <div className="mx-auto max-w-7xl px-4 pb-24 pt-10 md:pb-28">
+        <h1 className="text-[28px] font-bold md:text-5xl">Find your next <span className="text-yellow-400">Egypt adventure</span></h1>
         <p className="mt-2 text-lg md:text-xl">Search low prices on tours, cruises, diving &amp; more...</p>
       </div>
     </div>
     </>
-    <section className="mx-auto -mt-9 max-w-6xl px-4">
+    <section className="mx-auto -mt-9 max-w-7xl px-4">
       <div className="grid grid-cols-2 gap-2 rounded-xl border-2 border-yellow-400 bg-white p-3 shadow-2xl md:grid-cols-[2fr_1fr_1fr_1.3fr_auto] md:gap-1 md:border-4 md:bg-yellow-400 md:p-0">
         <div className="relative col-span-2 md:col-span-1"><Pin/><select value={dest} onChange={e=>setDest(e.target.value)} className={`${fld} ${dest?"":"text-gray-500"}`}><option value="">Departing from?</option>{DEPS.map(c=><option key={c}>{c}</option>)}</select></div>
         <DateField ph="Check-in date"/>
@@ -66,35 +69,29 @@ export default function Home(){
       <h2 className="mt-10 text-2xl font-bold">Browse by departure city</h2>
       <div className="noscroll mt-3 flex gap-4 overflow-x-auto">{BROWSE.filter(b=>count(b.city)>0).map(b=>
         <a key={b.slug} href={`/tours?city=${encodeURIComponent(b.city)}`} className="w-60 shrink-0 text-left">
-          <Img s={b.slug} className="h-40 w-full rounded-lg"/><h3 className="mt-2 font-bold">{b.name}</h3><p className="text-sm text-gray-600">Tours departing from {b.city}</p><p className="text-sm">{count(b.city)} {count(b.city)===1?"tour":"tours"} departing</p></a>)}</div>
+          <Img s={b.slug} className="aspect-[16/9] w-full rounded-xl"/><h3 className="mt-2 font-bold">{b.name}</h3><p className="text-sm text-gray-600">Tours departing from {b.city}</p><p className="text-sm">{count(b.city)} {count(b.city)===1?"tour":"tours"} departing</p></a>)}</div>
 
       <h2 className="mt-10 text-2xl font-bold">Popular departure cities</h2><p className="text-gray-600">Most popular choices for travelers from Egypt</p>
-      <div className="mt-3 grid grid-cols-2 gap-4 md:grid-cols-6">{TRENDING.map((c,i)=>
-        <button key={c} onClick={()=>{setCity(c);document.getElementById("tours")?.scrollIntoView({behavior:"smooth"})}} className={`relative h-44 overflow-hidden rounded-lg text-left ${"md:col-span-2"}`}>
+      <div className="mt-3 grid grid-cols-2 gap-6 md:grid-cols-6">{TRENDING.map((c,i)=>
+        <button key={c} onClick={()=>{setCity(c);setSvc("All");document.getElementById("tours")?.scrollIntoView({behavior:"smooth"})}} className={`relative aspect-[16/9] overflow-hidden rounded-2xl text-left ${"md:col-span-2"}`}>
           <Img s={slug(c)} className="absolute inset-0 h-full w-full"/><div className="absolute inset-0 bg-black/20"/>
           <span className="absolute left-3 top-3 text-xl font-bold text-white">{c} 🇪🇬</span></button>)}</div>
 
       <h2 className="mt-10 text-2xl font-bold">Explore Egypt</h2><p className="text-gray-600">Services and experiences WeCheaperTours offers</p>
-      <div className="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">{EXPLORE.map(e=>
+      <div className="mt-3 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">{EXPLORE.map(e=>
         <a key={e.slug} href={e.href} className="block overflow-hidden rounded-lg border hover:shadow-md">
-          <div className="relative"><Img s={e.slug} className="h-36 w-full"/>{e.st&&<span className={`absolute left-2 top-2 rounded px-2 py-1 text-xs font-semibold text-white ${e.st.startsWith("Under")?"bg-orange-600":"bg-red-700"}`}>{e.st}</span>}</div>
+          <div className="relative"><Img s={e.slug} className="aspect-[16/9] w-full"/>{e.st&&<span className={`absolute left-2 top-2 rounded px-2 py-1 text-xs font-semibold text-white ${e.st.startsWith("Under")?"bg-orange-600":"bg-red-700"}`}>{e.st}</span>}</div>
           <div className="p-3"><h3 className="font-bold">{e.t}</h3><p className="text-sm text-gray-600">{e.s}</p></div></a>)}</div>
 
       <h2 id="tours" className="mt-10 scroll-mt-4 text-2xl font-bold">Popular tours</h2><p className="text-gray-600">Pick a city and a service to filter</p>
-      <div className="noscroll mt-3 flex gap-2 overflow-x-auto">{["All",...DEPS].map(c=><button key={c} onClick={()=>setCity(c)} className={pill(city===c)}>{c}</button>)}</div>
-      <div className="noscroll mt-2 flex gap-2 overflow-x-auto">{TYPES.map(s=><button key={s} onClick={()=>setSvc(s)} className={pill(svc===s)}>{s}</button>)}</div>
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">{list.slice(0,12).map(t=>
-        <article key={t.id} className="overflow-hidden rounded-lg border bg-white">
-          <a href={`/tours/${t.id}`}><img src={t.image} alt={t.name} loading="lazy" className="h-40 w-full bg-gray-200 object-cover"/></a>
-          <div className="p-3"><h3 className="line-clamp-2 h-12 font-bold text-orange-500"><a href={`/tours/${t.id}`}>{t.name}</a></h3><p className="text-sm text-gray-600">Departs {(t as any).departureCity} · {t.duration}</p>
-            <p className="mt-2 text-sm text-gray-600">{t.type}</p>
-            <p className="mt-2 text-right font-bold text-gray-700">{t.onRequest?"Price on request":<>from {(t as any).currency||"$"}{t.price}</>}</p>
-            <a href={wa(`Hi, I need help with ${t.name} on [date]. From WeCheaperTours site.`)} target="_blank" rel="noreferrer" className="mt-2 block w-full rounded bg-[#FF6B00] py-2 text-center text-sm font-bold text-white hover:bg-orange-600">Check availability</a></div></article>)}
+      <div className="noscroll mt-3 flex gap-2 overflow-x-auto">{["All",...DEPS].map(c=><button key={c} onClick={()=>{setCity(c);setSvc("All")}} className={pill(city===c)}>{c}</button>)}</div>
+      <div className="noscroll mt-2 flex gap-2 overflow-x-auto">{typeChips.map(s=><button key={s} onClick={()=>setSvc(s)} className={pill(svc===s)}>{s}</button>)}</div>
+      <div className="mt-4 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">{list.slice(0,12).map(t=><TourCard key={t.id} t={t as any}/>)}
         {!list.length&&<p className="col-span-full py-8 text-center text-gray-500">No tours match this combination – try another city or service.</p>}</div>
     </section>
     <footer className="mt-16 bg-bk py-10 text-sm text-white">
-      <div className="mx-auto mb-6 max-w-6xl px-4"><div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="" className="h-12 w-12"/><span className="text-lg font-bold"><span className="text-[#FF6B00]">WeCheaper</span> Tours</span></div></div>
-      <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto mb-6 max-w-7xl px-4"><div className="flex items-center gap-2"><img src="/logo-emblem.png" alt="" className="h-12 w-12"/><span className="text-lg font-bold"><span className="text-[#FF6B00]">WeCheaper</span> Tours</span></div></div>
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
         {[["Support",["Manage your trips","Contact Customer Service","Safety resource centre"]],["Discover",["Tours","Nile Cruises","Car rentals","Vacation rentals"]],["Terms and settings",["Privacy & cookies","Terms of Service","Accessibility"]],["About",["About WeCheaperTours","How we work","Careers","Contact"]]].map(([h,l])=>
         <div key={h as string}><h4 className="mb-2 font-bold">{h as string}</h4>{(l as string[]).map(x=><p key={x} className="py-0.5 text-gray-200">{x}</p>)}</div>)}</div>
       <p className="mt-8 text-center text-gray-300">© WeCheaperTours.com – Discover Jordan &amp; Egypt</p></footer>

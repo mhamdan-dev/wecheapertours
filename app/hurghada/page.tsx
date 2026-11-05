@@ -16,8 +16,8 @@ function normalize(raw:any):Group[]{
 const GROUPS=normalize(hurghadaData);
 const COUNT=(TOURS as any[]).filter(t=>t.departureCity==="Hurghada").length;
 export default function P(){return <><Header/>
-  <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-8 md:overflow-visible md:px-6">
-    <h1 className="max-w-full break-words text-2xl font-bold md:text-3xl">Hurghada Tours &amp; VIP Services</h1>
+  <main className="mx-auto w-full max-w-7xl overflow-hidden px-4 py-8 md:overflow-visible md:px-6">
+    <h1 className="max-w-full break-words text-[28px] font-bold leading-tight md:text-4xl">Hurghada Tours &amp; VIP Services</h1>
     <p className="mt-2 text-gray-600">Tours and services departing from Hurghada. More detailed programs are coming soon.</p>
     <Link href="/tours?city=Hurghada" className="mt-4 inline-block rounded bg-[#FF6B00] px-5 py-3 font-bold text-white hover:bg-orange-600">See our {COUNT} excursions from Hurghada</Link>
     {GROUPS.length===0?<p className="mt-6 text-gray-600">Services list coming soon.</p>:

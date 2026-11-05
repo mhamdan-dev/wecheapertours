@@ -1,0 +1,44 @@
+WECHEAPERTOURS – LIST OF CHANGES (v12 → v15) – for review
+
+CURRENT TOTALS
+- 71 tours: Cairo departures 12 · Sharm El-Sheikh departures 31 · Hurghada departures 28
+- + 8 Nile cruises (separate page /nile-cruises, sample cruises – prices/ratings are still placeholders)
+
+1) HURGHADA – NEW NAUTICAL TOURS (v12) – 16 tours
+Paradise Island (Giftun) · Orange Bay · Eden Island · Sharm El Naga · Abu Dabbab Turtle Bay · Hula Hula & Dolphin Cruise · Dolphin House · Dolphina Park · Hurghada Grand Aquarium · Intro & Scuba Diving Courses · Seascope Semi-Submarine · Sunset Parasailing · Express Speedboat (White Island & Dolphin House) · Private Yacht Escape · Program A (Island Stopover & Discovery Dive) · Program B (Escape Combo).
+- Prices, child/adult rates, schedules and inclusions are taken from the document you sent.
+- Category: "Nautical - Hurghada".
+- The tours list now shows 20 tours at a time with a "Show more" button.
+
+2) HURGHADA – DESERT SAFARI + HORSE RIDING (v13) – 2 tours
+- Hurghada Desert Safari: Quad & Buggy (Option 1 Quad Safari 3h + Option 2 Super Safari 5–7h, in one card).
+- Horseback Riding: Beach & Desert Sunset in Hurghada (adult €35 / child €25 / VIP €50, max weight 100 kg).
+- Hurghada tours now total 28 (6 Cairo + 4 Luxor + 16 Nautical + 2 desert/horse).
+
+3) HURGHADA PAGE ERROR FIXED (v13)
+- The /hurghada page was crashing ("Cannot read properties of undefined (reading 'map')"). Fixed – the page now handles missing data safely.
+- The page shows the 6 service groups from your overview document, each with an "Ask on WhatsApp" button, and a button to the excursions departing from Hurghada.
+
+4) "NAUTICAL - HURGHADA" SHOWING IN SHARM FIXED (v14)
+- The tours themselves were never mixed (Sharm = 31 tours, Hurghada = 28 tours), but the category buttons showed every category for every city. So when you chose "Sharm" you still saw a "Nautical - Hurghada" button.
+- Now the category buttons only show categories that exist in the selected "Departing from" city, and the buttons show counts, e.g. "Cairo (12) · Sharm El-Sheikh (31) · Hurghada (28)".
+- The Sharm nautical category is now called "Nautical - Sharm" (10 tours); Hurghada is "Nautical - Hurghada" (16 tours).
+- Same logic on the homepage "Popular tours" section.
+
+5) REAL PHOTOS ADDED (v15) – from your WhatsApp ("Cairo & Gizah" and "Luxor")
+- "Cairo & Gizah" photos (6) are used ONLY on the Giza / Pyramids tours: The Ultimate Cairo & Giza Experience (Cairo), the 4 Cairo-from-Sharm tours, and the 6 Cairo-from-Hurghada tours (11 tours).
+- "Luxor" photos (4) are used ONLY on Luxor tours: the 4 Luxor-from-Hurghada tours and Luxor Express from Cairo (5 tours). Valley of the Kings stairs, the Tomb of Tutankhamun sign, the Anubis tomb relief and the temple gateway.
+- The two sets are never mixed. Each tour page has a photo gallery with descriptive alt text.
+- All other tours still use temporary stock photos – please send more photos (Sharm, Hurghada sea trips, Sinai, Siwa, Fayoum, White Desert, Aswan, Alexandria, wellness, etc.).
+
+6) KEPT FROM EARLIER VERSIONS
+- Tours are organised by DEPARTURE city (Cairo / Sharm El-Sheikh / Hurghada). The tour location is shown separately ("Departs Cairo", "Departs Hurghada", ...).
+- Categories: Nautical - Sharm, Nautical - Hurghada, Cultural Tours, Desert Safari, Deep Safari & Trekking, Mount Moses and St. Catherine's Monastery, Quad ATV Tours, Horse Riding, Wellness & Spa, City Tours, Jordan Excursions, Luxor Excursions.
+- WhatsApp number 201000578484 on all booking buttons. Mobile layout fix.
+
+THINGS WE NEED FROM YOU / TO CONFIRM
+a) More real photos for the remaining tours.
+b) Please confirm you have permission to publish the people (including the children) shown in the Giza and Luxor photos.
+c) Luxor tours: the document says the guide is French-speaking – confirm other languages.
+d) Prices for tours marked "Price on request" (VIP / private tours) and real cruise data (the 8 cruises are samples).
+e) Hurghada multi-day programs (Cairo & White Desert, Siwa, Cairo & Luxor, Abydos, Aswan & Abu Simbel) – send details if you want them as tours.

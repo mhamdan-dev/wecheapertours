@@ -7,16 +7,17 @@ import WhatsAppButton from "./WhatsAppButton";
 export default function Detail({t}:{t:any}){
   const TABS=["Overview",...(t.noItinerary?[]:["Itinerary"]),"Included / Excluded","Map","Reviews",...(t.practical?["Practical Guide"]:[])];
   const [tab,setTab]=useState(TABS[0]); const [date,setDate]=useState(""); const [main,setMain]=useState(0);
-  const pics=[t.image,...[1,2,3].map(i=>POOL[(t.id+i*5)%POOL.length])];
+  const gal:{src:string;alt:string}[]=t.gallery||[t.image,...[1,2,3].map(i=>POOL[(t.id+i*5)%POOL.length])].map((s:string)=>({src:s,alt:t.name}));
+  const pics=gal.map(g=>g.src);
   const cruise=t.type==="Cruise";
   return <><Header/>
-  <main className="mx-auto w-full max-w-6xl overflow-hidden px-4 py-6 md:overflow-visible md:px-6">
-    <h1 className="max-w-full break-words text-2xl font-bold md:text-3xl">{t.name}</h1>
+  <main className="mx-auto w-full max-w-7xl overflow-hidden px-4 py-6 md:overflow-visible md:px-6">
+    <h1 className="max-w-full break-words text-[28px] font-bold leading-tight md:text-4xl">{t.name}</h1>
     <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-600">{t.rating&&<><span className="rounded bg-[#0A1931] px-1.5 py-0.5 font-bold text-white">{t.rating}</span>{t.reviews} reviews · </>}Departure: {t.departureCity||t.city} · {t.duration}</p>
-    <ol className="mt-4 grid grid-cols-2 gap-2 text-sm sm:grid-cols-4">{["Select tour","Check availability","WhatsApp inquiry","Confirm"].map((s,i)=><li key={s} className="flex items-center gap-2 rounded-lg border p-2"><span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#FF6B00] text-xs font-bold text-white">{i+1}</span>{s}</li>)}</ol>
+    <ol className="mt-6 grid grid-cols-2 gap-3 md:grid-cols-4">{["Select tour","Check availability","WhatsApp inquiry","Confirm"].map((s,i)=><li key={s} className="flex items-center gap-3 rounded-xl border bg-white p-3 shadow-sm"><span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#FF6B00] text-sm font-bold text-white">{i+1}</span><span className="min-w-0 break-words text-sm font-medium leading-tight">{s}</span></li>)}</ol>
     <div className="mt-4 grid w-full max-w-full grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1fr)_340px]"><div className="min-w-0 max-w-full">{t.reminder&&<div className="mb-4 box-border w-full max-w-full rounded-lg border-l-4 border-yellow-400 bg-yellow-50 p-3 text-sm">⚠️ <b>Important reminder:</b> {t.reminder}</div>}{t.warning&&<div className="mb-4 box-border w-full max-w-full rounded-lg border-l-4 border-orange-500 bg-orange-50 p-3 text-sm">⚠️ {t.warning}</div>}
-      <div className="w-full max-w-full overflow-hidden rounded-lg"><img src={pics[main]} alt="" className="block h-[280px] w-full max-w-full bg-gray-200 object-cover md:h-[400px]"/></div>
-      <div className="mt-2 grid grid-cols-4 gap-2">{pics.map((p,i)=><button key={i} onClick={()=>setMain(i)} className={`overflow-hidden rounded-md border-2 ${main===i?"border-[#FF6B00]":"border-transparent"}`}><img src={p} alt="" className="h-16 w-full bg-gray-200 object-cover md:h-20"/></button>)}</div>
+      <div className="aspect-[16/9] w-full max-w-full overflow-hidden rounded-2xl bg-gray-200"><img src={pics[main]} alt={gal[main]?.alt||t.name} className="block h-full w-full object-cover"/></div>
+      <div className="noscroll mt-3 flex snap-x snap-mandatory gap-2 overflow-x-auto pb-1">{pics.map((p,i)=><button key={i} type="button" onClick={()=>setMain(i)} aria-label={`Show photo ${i+1}`} className={`aspect-[4/3] w-[120px] shrink-0 snap-start overflow-hidden rounded-lg border-2 ${main===i?"border-[#FF6B00]":"border-transparent"}`}><img src={p} alt={gal[i]?.alt||t.name} loading="lazy" className="h-full w-full object-cover"/></button>)}</div>
       <div className="noscroll mt-6 flex gap-1 overflow-x-auto border-b">{TABS.map(x=><button key={x} onClick={()=>setTab(x)} className={`whitespace-nowrap px-4 py-2 font-semibold ${tab===x?"border-b-2 border-[#FF6B00] text-[#FF6B00]":"text-gray-600"}`}>{x}</button>)}</div>
       <div className="py-5 text-gray-800">
         {tab==="Overview"&&t.prominent&&<div className="mb-4 grid grid-cols-2 gap-3">{t.prominent.map(([a,b]:string[])=><div key={a} className="rounded-lg bg-orange-50 p-4 text-center"><p className="text-xs uppercase text-gray-600">{a}</p><p className="text-xl font-bold text-[#FF6B00]">{b}</p></div>)}</div>}
@@ -43,7 +44,7 @@ export default function Detail({t}:{t:any}){
       <aside className="lg:sticky lg:top-4 lg:self-start"><div className="rounded-lg border p-5 shadow-sm">
         {t.onRequest||t.priceLabel?<p className="text-xl font-bold">{t.priceLabel||"Price on request"}</p>:<><p className="text-sm text-gray-500">from</p><p>{t.originalPrice&&<s className="mr-2 text-gray-400">${t.originalPrice}</s>}<b className="text-3xl">${t.price}</b> <span className="text-sm text-gray-500">per person</span></p></>}
         <input type="date" value={date} onChange={e=>setDate(e.target.value)} className="mt-4 h-12 w-full rounded-md border px-3"/>
-        <WhatsAppButton message={`Hi, I need help with ${t.name} on ${date||"[date to be confirmed]"}. From WeCheaperTours site.`} label="Check Availability" className="mt-3 block rounded bg-[#FF6B00] py-3 text-center font-bold text-white hover:bg-orange-600"/>
-        <WhatsAppButton message={`Hi, I need help with ${t.name}. From WeCheaperTours site.`} label="Book via WhatsApp" className="mt-2 block rounded bg-green-600 py-3 text-center font-bold text-white hover:bg-green-700"/></div></aside>
+        <WhatsAppButton message={`Hi, I need help with ${t.name} on ${date||"[date to be confirmed]"}. From WeCheaperTours site.`} label="Check Availability" className="btn-primary mt-3 block w-full"/>
+        <WhatsAppButton message={`Hi, I need help with ${t.name}. From WeCheaperTours site.`} label="Book via WhatsApp" className="mt-2 block w-full rounded-full bg-green-600 px-5 py-2.5 text-center font-medium text-white hover:bg-green-700"/></div></aside>
     </div></main><Footer/></>;
 }

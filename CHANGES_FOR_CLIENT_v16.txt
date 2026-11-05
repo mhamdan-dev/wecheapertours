@@ -1,0 +1,37 @@
+WECHEAPERTOURS – DESIGN UPDATE v16 (design only – no tours or prices were changed)
+
+You told us the site felt unprofessional: unattractive font, no clear layout, images stacked on top of each other, and no consistency in image size and width. All of that has been reworked.
+
+DATA (unchanged): 71 tours (Cairo 12 · Sharm El-Sheikh 31 · Hurghada 28) + 8 Nile cruises. Your real photos stay on the same tours as before (Giza photos only on Giza tours, Luxor photos only on Luxor tours).
+
+BEFORE → AFTER
+
+1) FONTS
+Before: default system font, no visual hierarchy.
+After: elegant serif "Playfair Display" for headings and tour titles, clean "Inter" for descriptions, prices and buttons. Tour titles are 20px bold (18px on mobile); main page titles are 36px on desktop / 28px on mobile; body text 15px with comfortable line spacing.
+
+2) TOUR CARDS (/tours, homepage "Popular tours", Hurghada/Sharm filters)
+Before: cards of different heights/widths, images of different sizes.
+After: every card is exactly the same size, with a rounded shadow design. The photo area has the SAME height on every card (220px on desktop, 200px on mobile) and the photo is cropped to fill it – no stretching. Inside each card, in this order: photo with small "Departs …" and duration labels in the top-left corner → title (max 2 lines) → departure/category → short description → price → buttons ("View Deal", and "Ask on WhatsApp" for price-on-request tours).
+Layout: 3 cards per row on desktop, 2 on tablet, 1 on mobile.
+
+3) TOUR PAGE – PHOTOS
+Before: photos appeared stacked/with different sizes.
+After: ONE large 16:9 main photo on top. Below it a single row of equal-size small thumbnails; click a thumbnail to change the main photo. On mobile the thumbnails swipe left/right.
+
+4) YOUR REAL PHOTOS
+All 10 photos (6 Giza + 4 Luxor) were re-cropped to the same 16:9 format, no stretching and no black bars, so they look consistent next to each other.
+
+5) BOOKING STEPS (1 Select tour → 2 Check availability → 3 WhatsApp inquiry → 4 Confirm)
+Before: uneven boxes.
+After: 4 equal step boxes with numbered circles – 4 in one row on desktop, 2×2 on mobile.
+
+6) CONSISTENCY
+Same page width and the same spacing between cards on every page. Same rounded orange buttons everywhere (and the same secondary button style). Homepage city, destination and "Explore Egypt" pictures use the same 16:9 shape.
+
+7) MOBILE
+Cards are full width with a 16:9-style photo area, no sideways scrolling, no photo overflowing the screen. Tested for 390px-wide phones.
+
+STILL TO DO / NEEDED FROM YOU
+- More real photos for the remaining tours (they still show temporary stock photos).
+- Please confirm you have permission to publish the people shown in the Giza and Luxor photos.
