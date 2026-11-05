@@ -1,41 +1,57 @@
 "use client";
-import {useEffect,useState} from "react";
-import {createPortal} from "react-dom";
-import {wa} from "@/lib/wa";
-const GUESTS=["Couple / 2 Guests","Family","Group"];
-const inp="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-[#FF6B00] focus:outline-none";
-export default function EnquiryModal({tour,onClose}:{tour:any|null;onClose:()=>void}){
-  const [mounted,setMounted]=useState(false);
-  useEffect(()=>{setMounted(true)},[]);
-  const [f,setF]=useState({name:"",email:"",whatsapp:"",phone:"",date:"",guests:GUESTS[0],message:""});
-  useEffect(()=>{ if(tour) setF({name:"",email:"",whatsapp:"",phone:"",date:"",guests:GUESTS[0],message:`Hello, I would like to enquire about ${tour.name}`}); },[tour]);
-  useEffect(()=>{ const k=(e:KeyboardEvent)=>{if(e.key==="Escape")onClose()}; if(tour){document.addEventListener("keydown",k);document.body.style.overflow="hidden";} return ()=>{document.removeEventListener("keydown",k);document.body.style.overflow="";}; },[tour,onClose]);
-  if(!tour||!mounted) return null;
-  const set=(k:string)=>(e:any)=>setF({...f,[k]:e.target.value});
-  const submit=(e:any)=>{
+import { useEffect, useState } from "react";
+import { wa } from "@/lib/wa";
+
+const GUESTS = ["Couple / 2 Guests", "Family", "Group"];
+const inp = "mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm focus:border-[#FF6800] focus:outline-none";
+
+export default function EnquiryModal({ tour, onClose }: { tour: any | null; onClose: () => void }) {
+  const [f, set] = useState({ name: "", email: "", phone: "", date: "", guests: GUESTS[0], msg: "" });
+
+  useEffect(() => {
+    if (tour) {
+      set((p) => ({ ...p, msg: `Hi, I am interested in ${tour?.name || tour?.title || ""}. Please send me details and price.` }));
+    }
+  }, [tour]);
+
+  useEffect(() => {
+    const h = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", h);
+    return () => window.removeEventListener("keydown", h);
+  }, [onClose]);
+
+  if (!tour) return null;
+
+  const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg=["New enquiry from WeCheaperTours website","",`Tour: ${tour.name}`,`Name: ${f.name}`,`Email: ${f.email}`,`WhatsApp: ${f.whatsapp||"-"}`,`Phone: ${f.phone}`,`Approx. travel date: ${f.date||"-"}`,`Guests: ${f.guests}`,"",`Message: ${f.message}`].join("\n");
-    window.open(wa(msg),"_blank","noopener,noreferrer"); onClose();
+    const text = `New Enquiry - ${tour?.name || tour?.title || ""}\n\nName: ${f.name}\nEmail: ${f.email}\nPhone: ${f.phone}\nTravel Date: ${f.date}\nGuests: ${f.guests}\n\nMessage: ${f.msg}`;
+    window.open(wa(text), "_blank");
+    onClose();
   };
-  return createPortal(<div className="fixed inset-0 z-[9999] flex items-start justify-center overflow-y-auto bg-black/50 p-4 md:items-center" onClick={onClose} role="dialog" aria-modal="true" aria-label="Enquiry form">
-    <form onSubmit={submit} onClick={e=>e.stopPropagation()} className="relative my-4 w-full max-w-lg rounded-2xl bg-white p-5 pb-20 shadow-2xl md:p-6 md:pb-20">
-      <button type="button" onClick={onClose} aria-label="Close" className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full text-2xl leading-none text-gray-500 hover:bg-gray-100">×</button>
-      <h2 className="pr-10 text-xl font-bold md:text-2xl">Enquire about this tour</h2>
-      <p className="mt-1 text-sm font-medium text-gray-700">{tour.name}</p>
-      <div className="mt-4 rounded-lg border border-yellow-300 bg-yellow-50 p-3 text-sm text-yellow-900"><b>Informational Enquiry:</b> Submitting this request is 100% free with no commitment. All itinerary dates and rates are confirmed directly by our team.</div>
-      <div className="mt-4 space-y-3">
-        <label className="block text-sm font-medium">Your Full Name*<input required value={f.name} onChange={set("name")} className={inp}/></label>
-        <label className="block text-sm font-medium">Email Address*<input required type="email" value={f.email} onChange={set("email")} className={inp}/></label>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <label className="block text-sm font-medium">WhatsApp<input type="tel" value={f.whatsapp} onChange={set("whatsapp")} className={inp}/></label>
-          <label className="block text-sm font-medium">Phone*<input required type="tel" value={f.phone} onChange={set("phone")} className={inp}/></label>
+
+  return (
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4" onClick={onClose}>
+      <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="mb-4 flex items-start justify-between">
+          <div>
+            <h3 className="text-xl font-bold">Enquire Now</h3>
+            <p className="mt-1 text-sm text-gray-600">{tour?.name || tour?.title || ""}</p>
+          </div>
+          <button type="button" onClick={onClose} className="text-2xl leading-none text-gray-500 hover:text-black">×</button>
         </div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          <label className="block text-sm font-medium">Approx. Travel Date<input type="date" value={f.date} onChange={set("date")} className={inp}/></label>
-          <label className="block text-sm font-medium">Number of Guests<select value={f.guests} onChange={set("guests")} className={inp}>{GUESTS.map(g=><option key={g}>{g}</option>)}</select></label>
-        </div>
-        <label className="block text-sm font-medium">Your Requirements &amp; Message*<textarea required rows={4} value={f.message} onChange={set("message")} className={inp}/></label>
+        <form onSubmit={submit} className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <label className="block text-sm font-medium">Your Name<input required className={inp} value={f.name} onChange={(e) => set({ ...f, name: e.target.value })} /></label>
+          <label className="block text-sm font-medium">Email<input required type="email" className={inp} value={f.email} onChange={(e) => set({ ...f, email: e.target.value })} /></label>
+          <label className="block text-sm font-medium">Phone / WhatsApp<input required className={inp} value={f.phone} onChange={(e) => set({ ...f, phone: e.target.value })} /></label>
+          <label className="block text-sm font-medium">Approx. Travel Date<input type="date" className={inp} value={f.date} onChange={(e) => set({ ...f, date: e.target.value })} /></label>
+          <label className="block text-sm font-medium sm:col-span-2">Number of Guests<select className={inp} value={f.guests} onChange={(e) => set({ ...f, guests: e.target.value })}>{GUESTS.map((g) => <option key={g}>{g}</option>)}</select></label>
+          <label className="block text-sm font-medium sm:col-span-2">Message<textarea rows={4} className={inp} value={f.msg} onChange={(e) => set({ ...f, msg: e.target.value })} /></label>
+          <div className="flex gap-3 sm:col-span-2">
+            <button type="button" onClick={onClose} className="flex-1 rounded-lg border border-gray-300 py-3 text-sm font-semibold">Cancel</button>
+            <button type="submit" className="flex-1 rounded-lg bg-[#FF6800] py-3 text-sm font-bold text-white">Submit Enquiry</button>
+          </div>
+        </form>
       </div>
-      <div className="mt-5 flex gap-3"><button type="button" onClick={onClose} className="flex-1 rounded-full bg-gray-200 px-5 py-2.5 font-medium text-gray-800 hover:bg-gray-300">Cancel</button><button type="submit" className="btn-primary flex-1">Submit Enquiry</button></div>
-    </form></div>,document.body);
-}
+    </div>
+  );
+};
